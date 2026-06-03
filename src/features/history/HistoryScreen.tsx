@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from "react-native"
+
 import {
   ScreenLayout,
   ScreenTitle,
@@ -12,7 +13,7 @@ import {
 } from "../../design-system"
 import { useMoodHistory, formatEntryTime, useProfile } from "../../hooks"
 
-export default function HistoryScreen() {
+export default function HistoryScreen(): React.JSX.Element {
   const { entries, clearHistory, loading } = useMoodHistory()
   const { profile } = useProfile()
 
@@ -35,7 +36,12 @@ export default function HistoryScreen() {
       )}
 
       {entries.map((entry) => (
-        <Card key={entry.id} variant="leftAccent" accentColor={entry.color} style={styles.card}>
+        <Card
+          key={entry.id}
+          variant="leftAccent"
+          accentColor={entry.color}
+          style={styles.card}
+        >
           <Text style={styles.emoji}>{entry.emoji}</Text>
           <View style={styles.info}>
             <Text style={[typography.moodLabelSm, { color: entry.color }]}>

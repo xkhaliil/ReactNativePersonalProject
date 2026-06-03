@@ -1,12 +1,24 @@
+import type React from "react"
 import { useRef } from "react"
 import { StyleSheet, Text, View } from "react-native"
-import { Button, colors, spacing, radii, borderWidths, fontSizes, sizes } from "../../design-system"
+
+import {
+  Button,
+  colors,
+  spacing,
+  radii,
+  borderWidths,
+  fontSizes,
+  sizes,
+} from "../../design-system"
 
 type MoodCameraProps = {
   onScan: () => void
 }
 
-export default function MoodCamera({ onScan }: MoodCameraProps) {
+export default function MoodCamera({
+  onScan,
+}: MoodCameraProps): React.JSX.Element {
   const scanCount = useRef(0)
 
   const handleScan = () => {
@@ -24,7 +36,12 @@ export default function MoodCamera({ onScan }: MoodCameraProps) {
         <View style={styles.cornerBL} />
         <View style={styles.cornerBR} />
       </View>
-      <Button label="✨ Scan My Mood" onPress={handleScan} variant="primary" activeOpacity={0.7} />
+      <Button
+        label="✨ Scan My Mood"
+        onPress={handleScan}
+        variant="primary"
+        activeOpacity={0.7}
+      />
     </View>
   )
 }
@@ -56,9 +73,37 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xl,
   },
   cameraIcon: { fontSize: fontSizes.emojiLg },
-  hint: { color: colors.text.muted, fontSize: fontSizes.sm, marginTop: spacing.sm },
-  cornerTL: { ...cornerBase, top: -2, left: -2, borderTopWidth: borderWidths.heavy, borderLeftWidth: borderWidths.heavy },
-  cornerTR: { ...cornerBase, top: -2, right: -2, borderTopWidth: borderWidths.heavy, borderRightWidth: borderWidths.heavy },
-  cornerBL: { ...cornerBase, bottom: -2, left: -2, borderBottomWidth: borderWidths.heavy, borderLeftWidth: borderWidths.heavy },
-  cornerBR: { ...cornerBase, bottom: -2, right: -2, borderBottomWidth: borderWidths.heavy, borderRightWidth: borderWidths.heavy },
+  hint: {
+    color: colors.text.muted,
+    fontSize: fontSizes.sm,
+    marginTop: spacing.sm,
+  },
+  cornerTL: {
+    ...cornerBase,
+    top: -2,
+    left: -2,
+    borderTopWidth: borderWidths.heavy,
+    borderLeftWidth: borderWidths.heavy,
+  },
+  cornerTR: {
+    ...cornerBase,
+    top: -2,
+    right: -2,
+    borderTopWidth: borderWidths.heavy,
+    borderRightWidth: borderWidths.heavy,
+  },
+  cornerBL: {
+    ...cornerBase,
+    bottom: -2,
+    left: -2,
+    borderBottomWidth: borderWidths.heavy,
+    borderLeftWidth: borderWidths.heavy,
+  },
+  cornerBR: {
+    ...cornerBase,
+    bottom: -2,
+    right: -2,
+    borderBottomWidth: borderWidths.heavy,
+    borderRightWidth: borderWidths.heavy,
+  },
 })

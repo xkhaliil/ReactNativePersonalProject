@@ -3,9 +3,12 @@ import {
   useRoute,
   type RouteProp,
 } from "@react-navigation/native"
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack"
-import { StyleSheet, Text, View } from "react-native"
-import type { HomeStackParamList } from "#shared"
+import { type NativeStackNavigationProp } from "@react-navigation/native-stack"
+import type React from "react"
+import { StyleSheet, Text } from "react-native"
+
+import { type HomeStackParamList } from "#shared"
+
 import {
   ScreenLayout,
   SectionTitle,
@@ -64,7 +67,7 @@ const TRACK_LIST: Record<string, string[]> = {
   ],
 }
 
-export default function PlaylistDetailScreen() {
+export default function PlaylistDetailScreen(): React.JSX.Element {
   const route = useRoute<PlaylistDetailRouteProp>()
   const navigation = useNavigation<PlaylistDetailNavProp>()
   const { mood, emoji, color, playlistTitle, genre } = route.params

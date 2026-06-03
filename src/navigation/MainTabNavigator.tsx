@@ -1,10 +1,14 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import type React from "react"
+
 import { StyleSheet, Text } from "react-native"
+
+import { type MainTabParamList } from "#shared"
+
+import { colors, sizes, borderWidths } from "../design-system"
 import { HistoryScreen } from "../features/history"
 import { HomeStackNavigator } from "../features/home"
 import { ProfileScreen } from "../features/profile"
-import type { MainTabParamList } from "#shared"
-import { colors, sizes, borderWidths } from "../design-system"
 
 const Tab = createBottomTabNavigator<MainTabParamList>()
 
@@ -22,7 +26,7 @@ function TabIcon({ label, focused }: { label: string; focused: boolean }) {
   )
 }
 
-export default function MainTabNavigator() {
+export default function MainTabNavigator(): React.JSX.Element {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({

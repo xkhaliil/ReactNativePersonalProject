@@ -5,13 +5,15 @@
  * Not tied to any single feature's data shape.
  */
 
+import type React from "react"
 import { StyleSheet, View, type ViewProps } from "react-native"
+
 import { colors, spacing, radii, borderWidths } from "../tokens"
 
 type CardVariant =
-  | "surface"    // Standard card (#1E1E1E)
+  | "surface" // Standard card (#1E1E1E)
   | "surfaceAlt" // Slightly lighter surface (#282828)
-  | "bordered"   // Surface with a colored border
+  | "bordered" // Surface with a colored border
   | "leftAccent" // Horizontal list item with a left colored stripe
 
 type CardProps = ViewProps & {
@@ -28,7 +30,7 @@ export function Card({
   borderWidth = borderWidths.thick,
   style,
   ...props
-}: CardProps) {
+}: CardProps): React.JSX.Element {
   const variantStyle = (() => {
     switch (variant) {
       case "surfaceAlt":

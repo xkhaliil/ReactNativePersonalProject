@@ -4,10 +4,10 @@
  * Import from here, not from individual primitive files.
  */
 
-import { palette } from "./primitives/colors"
-import { fontSizes, fontWeights, letterSpacings } from "./primitives/typography"
-import { spacing } from "./primitives/spacing"
 import { radii, borderWidths, sizes } from "./primitives/borders"
+import { palette } from "./primitives/colors"
+import { spacing } from "./primitives/spacing"
+import { fontSizes, fontWeights, letterSpacings } from "./primitives/typography"
 
 // ─── Color Tokens ────────────────────────────────────────────────────────────
 

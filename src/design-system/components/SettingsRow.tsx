@@ -5,8 +5,11 @@
  * + switch control is needed.
  */
 
+import type React from "react"
 import { StyleSheet, Switch, View } from "react-native"
+
 import { colors, spacing, fontWeights } from "../tokens"
+
 import { Body, Caption } from "./Typography"
 
 type SettingsRowProps = {
@@ -21,7 +24,7 @@ export function SettingsRow({
   description,
   value,
   onValueChange,
-}: SettingsRowProps) {
+}: SettingsRowProps): React.JSX.Element {
   return (
     <View style={styles.row}>
       <View style={styles.info}>

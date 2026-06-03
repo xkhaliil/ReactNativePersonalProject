@@ -9,7 +9,15 @@
  */
 
 import { StyleSheet, Text, TouchableOpacity } from "react-native"
-import { colors, spacing, radii, fontSizes, fontWeights, borderWidths } from "../tokens"
+
+import {
+  colors,
+  spacing,
+  radii,
+  fontSizes,
+  fontWeights,
+  borderWidths,
+} from "../tokens"
 
 type ButtonVariant = "primary" | "outline" | "ghost"
 
@@ -30,7 +38,7 @@ export function Button({
   accentColor,
   disabled = false,
   activeOpacity = 0.8,
-}: ButtonProps) {
+}: ButtonProps): React.JSX.Element {
   const resolvedAccent = accentColor ?? colors.accent.default
 
   const containerStyle = [

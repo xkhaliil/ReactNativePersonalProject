@@ -7,7 +7,9 @@
  * screen-level background color and padding remain a single source of truth.
  */
 
+import type React from "react"
 import { ScrollView, StyleSheet, type ScrollViewProps } from "react-native"
+
 import { colors, spacing } from "../tokens"
 
 type ScreenLayoutProps = ScrollViewProps & {
@@ -23,7 +25,7 @@ export function ScreenLayout({
   contentContainerStyle,
   style,
   ...props
-}: ScreenLayoutProps) {
+}: ScreenLayoutProps): React.JSX.Element {
   return (
     <ScrollView
       style={[styles.scroll, style]}

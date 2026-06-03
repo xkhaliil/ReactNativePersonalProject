@@ -1,4 +1,6 @@
+import type React from "react"
 import { StyleSheet, Text } from "react-native"
+
 import { Card, typography, spacing, fontSizes } from "../../design-system"
 
 type MoodCardProps = {
@@ -7,7 +9,11 @@ type MoodCardProps = {
   color: string
 }
 
-export default function MoodCard({ emoji, label, color }: MoodCardProps) {
+export default function MoodCard({
+  emoji,
+  label,
+  color,
+}: MoodCardProps): React.JSX.Element {
   return (
     <Card variant="bordered" accentColor={color} style={styles.card}>
       <Text style={styles.emoji}>{emoji}</Text>

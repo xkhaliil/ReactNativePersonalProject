@@ -8,11 +8,8 @@
 // ─── Tokens (what components consume) ────────────────────────────────────────
 export * from "./tokens"
 
-// ─── Raw primitives (exported for reference / advanced use) ──────────────────
+// ─── Raw primitives (palette exported for direct color access) ──────────────
 export * from "./primitives/colors"
-export * from "./primitives/spacing"
-export * from "./primitives/typography"
-export * from "./primitives/borders"  // includes sizes
 
 // ─── Components ──────────────────────────────────────────────────────────────
 export { Button } from "./components/Button"

@@ -7,6 +7,7 @@
  */
 
 import { useCallback } from "react"
+
 import { useStorage } from "./useStorage"
 
 const STORAGE_KEY = "app-settings-v1"
@@ -33,7 +34,10 @@ const DEFAULT_SETTINGS: AppSettings = {
 
 type UseSettingsReturn = {
   settings: AppSettings
-  setSetting: <K extends keyof AppSettings>(key: K, value: AppSettings[K]) => Promise<void>
+  setSetting: <K extends keyof AppSettings>(
+    key: K,
+    value: AppSettings[K],
+  ) => Promise<void>
   loading: boolean
 }
 

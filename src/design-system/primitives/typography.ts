@@ -34,9 +34,3 @@ export const letterSpacings = {
   wide: 2,
   wider: 4,
 } as const
-
-export const lineHeights = {
-  tight: 1.2,
-  normal: 1.5,
-  loose: 1.8,
-} as const

@@ -6,33 +6,41 @@
  * components never hard-code font sizes or colors.
  */
 
+import type React from "react"
 import { Text, type TextProps } from "react-native"
+
 import { typography } from "../tokens"
 
-export function ScreenTitle({ style, ...props }: TextProps) {
+export function ScreenTitle({ style, ...props }: TextProps): React.JSX.Element {
   return <Text style={[typography.screenTitle, style]} {...props} />
 }
 
-export function SectionTitle({ style, ...props }: TextProps) {
+export function SectionTitle({
+  style,
+  ...props
+}: TextProps): React.JSX.Element {
   return <Text style={[typography.sectionTitle, style]} {...props} />
 }
 
-export function CardTitle({ style, ...props }: TextProps) {
+export function CardTitle({ style, ...props }: TextProps): React.JSX.Element {
   return <Text style={[typography.cardTitle, style]} {...props} />
 }
 
-export function Body({ style, ...props }: TextProps) {
+export function Body({ style, ...props }: TextProps): React.JSX.Element {
   return <Text style={[typography.body, style]} {...props} />
 }
 
-export function BodySecondary({ style, ...props }: TextProps) {
+export function BodySecondary({
+  style,
+  ...props
+}: TextProps): React.JSX.Element {
   return <Text style={[typography.bodySecondary, style]} {...props} />
 }
 
-export function Caption({ style, ...props }: TextProps) {
+export function Caption({ style, ...props }: TextProps): React.JSX.Element {
   return <Text style={[typography.caption, style]} {...props} />
 }
 
-export function Label({ style, ...props }: TextProps) {
+export function Label({ style, ...props }: TextProps): React.JSX.Element {
   return <Text style={[typography.label, style]} {...props} />
 }

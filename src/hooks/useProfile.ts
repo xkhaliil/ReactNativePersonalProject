@@ -17,12 +17,12 @@
  */
 
 import { useCallback, useEffect, useState } from "react"
-import { useStorage } from "./useStorage"
+
 import { useSettings } from "./useSettings"
+import { useStorage } from "./useStorage"
 
 const STORAGE_KEY = "user-profile-v1"
 
-const MAX_NAME_LENGTH = 30
 const MAX_BIO_LENGTH = 120
 const MAX_GENRE_LENGTH = 40
 

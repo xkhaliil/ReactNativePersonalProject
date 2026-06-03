@@ -1,8 +1,12 @@
-import { useState } from "react"
-import { StyleSheet, View } from "react-native"
 import { useNavigation } from "@react-navigation/native"
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack"
-import type { HomeStackParamList } from "#shared"
+import { type NativeStackNavigationProp } from "@react-navigation/native-stack"
+import type React from "react"
+import { useState } from "react"
+
+import { StyleSheet, View } from "react-native"
+
+import { type HomeStackParamList } from "#shared"
+
 import {
   ScreenLayout,
   ScreenTitle,
@@ -13,6 +17,7 @@ import {
   palette,
 } from "../../design-system"
 import { useMoodHistory, useProfile } from "../../hooks"
+
 import MoodCamera from "./MoodCamera"
 import MoodCard from "./MoodCard"
 import PlaylistCard from "./PlaylistCard"
@@ -62,7 +67,7 @@ const MOODS: Mood[] = [
   },
 ]
 
-export default function HomeScreen() {
+export default function HomeScreen(): React.JSX.Element {
   const [moodIndex, setMoodIndex] = useState(0)
   const navigation = useNavigation<HomeNavProp>()
   const { addEntry } = useMoodHistory()
@@ -88,7 +93,9 @@ export default function HomeScreen() {
   return (
     <ScreenLayout centered>
       <ScreenTitle style={styles.title}>🎧 Mood Playlist</ScreenTitle>
-      <BodySecondary style={styles.subtitle}>Let your vibe pick your music</BodySecondary>
+      <BodySecondary style={styles.subtitle}>
+        Let your vibe pick your music
+      </BodySecondary>
 
       <MoodCamera onScan={handleScan} />
 
@@ -122,11 +129,7 @@ export default function HomeScreen() {
         accentColor={currentMood.color}
       />
 
-      <Button
-        label="🔀 Change Mood"
-        onPress={handleScan}
-        variant="ghost"
-      />
+      <Button label="🔀 Change Mood" onPress={handleScan} variant="ghost" />
     </ScreenLayout>
   )
 }

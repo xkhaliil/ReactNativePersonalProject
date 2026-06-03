@@ -1,4 +1,6 @@
+import type React from "react"
 import { StyleSheet } from "react-native"
+
 import {
   ScreenLayout,
   ScreenTitle,
@@ -12,7 +14,7 @@ import {
 } from "../../design-system"
 import { useProfile } from "../../hooks"
 
-export default function ProfileScreen() {
+export default function ProfileScreen(): React.JSX.Element {
   const {
     draft,
     errors,
@@ -83,11 +85,7 @@ export default function ProfileScreen() {
           />
         )}
         {isDirty && (
-          <Button
-            label="Discard Changes"
-            onPress={reset}
-            variant="ghost"
-          />
+          <Button label="Discard Changes" onPress={reset} variant="ghost" />
         )}
       </Card>
 

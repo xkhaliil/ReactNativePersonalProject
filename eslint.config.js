@@ -2,9 +2,9 @@ import config from "@christopherjbaker/eslint-config/react-strict"
 import { defineConfig, globalIgnores } from "eslint/config"
 import globals from "globals"
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 export default defineConfig(
   globalIgnores(["dist/", "web-build/"]),
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   config,
   {
     // configs overrides, if need

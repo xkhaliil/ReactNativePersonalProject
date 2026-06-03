@@ -1,4 +1,6 @@
+import type React from "react"
 import { StyleSheet } from "react-native"
+
 import {
   ScreenLayout,
   ScreenTitle,
@@ -11,7 +13,7 @@ import {
 } from "../../design-system"
 import { useSettings } from "../../hooks"
 
-export default function SettingsScreen() {
+export default function SettingsScreen(): React.JSX.Element {
   const { settings, setSetting } = useSettings()
 
   return (

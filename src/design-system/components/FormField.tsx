@@ -6,8 +6,11 @@
  * ever reaches for raw TextInput or hardcodes colors/sizes.
  */
 
+import type React from "react"
 import { StyleSheet, TextInput, type TextInputProps, View } from "react-native"
+
 import { colors, spacing, fontSizes, radii, borderWidths } from "../tokens"
+
 import { Body, Caption } from "./Typography"
 
 type FormFieldProps = TextInputProps & {
@@ -18,7 +21,13 @@ type FormFieldProps = TextInputProps & {
   error?: string
 }
 
-export function FormField({ label, hint, error, style, ...inputProps }: FormFieldProps) {
+export function FormField({
+  label,
+  hint,
+  error,
+  style,
+  ...inputProps
+}: FormFieldProps): React.JSX.Element {
   const hasError = Boolean(error)
 
   return (

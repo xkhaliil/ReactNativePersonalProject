@@ -1,12 +1,23 @@
+import type React from "react"
 import { StyleSheet, View } from "react-native"
-import { Card, CardTitle, BodySecondary, Button, spacing } from "../../design-system"
+
+import {
+  Card,
+  CardTitle,
+  BodySecondary,
+  Button,
+  spacing,
+} from "../../design-system"
 
 type PlaylistCardProps = {
   title: string
   genre: string
 }
 
-export default function PlaylistCard({ title, genre }: PlaylistCardProps) {
+export default function PlaylistCard({
+  title,
+  genre,
+}: PlaylistCardProps): React.JSX.Element {
   return (
     <Card variant="surfaceAlt" style={styles.card}>
       <View style={styles.info}>
@@ -15,7 +26,7 @@ export default function PlaylistCard({ title, genre }: PlaylistCardProps) {
       </View>
       <Button
         label="▶ Play on Spotify"
-        onPress={() => {}}
+        onPress={() => undefined}
         variant="primary"
         disabled
       />

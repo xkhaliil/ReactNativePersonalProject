@@ -17,5 +17,3 @@ export const spacing = {
   "5xl": 40,
   "6xl": 48,
 } as const
-
-export type SpacingKey = keyof typeof spacing

@@ -13,8 +13,9 @@
  */
 
 import { useCallback } from "react"
-import { useStorage } from "./useStorage"
+
 import { useHaptics } from "./useHaptics"
+import { useStorage } from "./useStorage"
 
 const STORAGE_KEY = "mood-history-v1"
 const MAX_ENTRIES = 50

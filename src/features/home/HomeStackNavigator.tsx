@@ -1,11 +1,23 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { useNavigation } from "@react-navigation/native"
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack"
+import {
+  createNativeStackNavigator,
+  type NativeStackNavigationProp,
+} from "@react-navigation/native-stack"
+import type React from "react"
 import { StyleSheet, Text, TouchableOpacity } from "react-native"
-import type { HomeStackParamList, RootStackParamList } from "#shared"
+
+import { type HomeStackParamList, type RootStackParamList } from "#shared"
+
+import {
+  colors,
+  fontWeights,
+  fontSizes,
+  spacing,
+  borderWidths,
+} from "../../design-system"
+
 import HomeScreen from "./HomeScreen"
 import PlaylistDetailScreen from "./PlaylistDetailScreen"
-import { colors, fontWeights, fontSizes, spacing, borderWidths } from "../../design-system"
 
 const Stack = createNativeStackNavigator<HomeStackParamList>()
 
@@ -23,13 +35,16 @@ function SettingsButton() {
   )
 }
 
-export default function HomeStackNavigator() {
+export default function HomeStackNavigator(): React.JSX.Element {
   return (
     <Stack.Navigator
       screenOptions={{
         headerStyle: { backgroundColor: colors.bg.screen },
         headerTintColor: colors.accent.default,
-        headerTitleStyle: { color: colors.text.primary, fontWeight: fontWeights.bold },
+        headerTitleStyle: {
+          color: colors.text.primary,
+          fontWeight: fontWeights.bold,
+        },
       }}
     >
       <Stack.Screen
