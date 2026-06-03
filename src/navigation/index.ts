@@ -15,8 +15,6 @@ export { default as MainTabNavigator } from "./MainTabNavigator"
 export { default as HomeStackNavigator } from "./HomeStackNavigator"
 
 export { ROUTES, TAB_LABELS } from "./routes"
-export { NAVIGATION_TRANSITIONS } from "./navigationMap"
-export type { NavigationTransition } from "./navigationMap"
 
 export {
   useRootNavigation,

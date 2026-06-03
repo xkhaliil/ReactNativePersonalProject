@@ -24,6 +24,7 @@ export type NavigationTransition = {
  * Every intentional navigation in the app.
  * There is no file-based routing; all paths are declared in src/navigation/.
  */
+/** Documented transitions for code review — see README Navigation section. */
 export const NAVIGATION_TRANSITIONS: NavigationTransition[] = [
   {
     from: "App launch",
