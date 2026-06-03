@@ -19,8 +19,19 @@ import {
 import HomeScreen from "./HomeScreen"
 import PlaylistDetailScreen from "./PlaylistDetailScreen"
 
+/**
+ * HomeStackNavigator — nested Stack navigator (child of MainTabs > HomeTab).
+ *
+ * Screen map:
+ *   Home           → HomeScreen           (scan mood, view playlist cards)
+ *   PlaylistDetail → PlaylistDetailScreen (detail view for a playlist card)
+ *
+ * The ⚙️ button in the Home header escapes this stack and navigates up
+ * to the RootStack to open the Settings modal.
+ */
 const Stack = createNativeStackNavigator<HomeStackParamList>()
 
+/** Escapes the nested stack and opens Settings in the root modal stack. */
 function SettingsButton() {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>()
@@ -55,6 +66,7 @@ export default function HomeStackNavigator(): React.JSX.Element {
           headerRight: () => <SettingsButton />,
         }}
       />
+      {/* Pushed when the user taps a playlist card on the Home screen */}
       <Stack.Screen
         name="PlaylistDetail"
         component={PlaylistDetailScreen}

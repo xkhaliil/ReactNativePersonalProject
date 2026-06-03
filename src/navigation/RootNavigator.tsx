@@ -8,6 +8,16 @@ import { SettingsScreen } from "../features/settings"
 
 import MainTabNavigator from "./MainTabNavigator"
 
+/**
+ * RootNavigator — top-level Stack navigator.
+ *
+ * Screen map:
+ *   Tabs      → MainTabNavigator  (bottom tabs, shown first, no header)
+ *   Settings  → SettingsScreen    (modal overlay, reachable app-wide)
+ *
+ * This stack owns the Settings modal so any tab or nested stack can
+ * push it without needing to pass a callback down.
+ */
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
 export default function RootNavigator(): React.JSX.Element {
@@ -22,11 +32,13 @@ export default function RootNavigator(): React.JSX.Element {
         },
       }}
     >
+      {/* Primary experience — hides the root header so each tab manages its own */}
       <Stack.Screen
-        name="Main"
+        name="Tabs"
         component={MainTabNavigator}
         options={{ headerShown: false }}
       />
+      {/* Modal pushed from HomeStackNavigator's ⚙️ button */}
       <Stack.Screen
         name="Settings"
         component={SettingsScreen}

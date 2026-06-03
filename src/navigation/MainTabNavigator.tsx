@@ -10,6 +10,17 @@ import { HistoryScreen } from "../features/history"
 import { HomeStackNavigator } from "../features/home"
 import { ProfileScreen } from "../features/profile"
 
+/**
+ * MainTabNavigator — Bottom Tabs navigator (child of RootStack > Tabs).
+ *
+ * Tab map:
+ *   HomeTab  → HomeStackNavigator  (nested Stack: Home → PlaylistDetail)
+ *   History  → HistoryScreen       (flat screen)
+ *   Profile  → ProfileScreen       (flat screen)
+ *
+ * The HomeTab hosts its own Stack so navigation between Home and
+ * PlaylistDetail stays scoped inside the Discover tab.
+ */
 const Tab = createBottomTabNavigator<MainTabParamList>()
 
 const TAB_ICONS: Record<string, string> = {
@@ -43,6 +54,7 @@ export default function MainTabNavigator(): React.JSX.Element {
         ),
       })}
     >
+      {/* Discover: nested Stack handles Home ↔ PlaylistDetail transitions */}
       <Tab.Screen
         name="HomeTab"
         component={HomeStackNavigator}
