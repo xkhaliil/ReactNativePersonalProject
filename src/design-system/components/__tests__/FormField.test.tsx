@@ -44,7 +44,10 @@ describe("FormField – unit", () => {
  */
 function ControlledFormField() {
   const [value, setValue] = useState("")
-  const error = value.length > 0 && !value.includes("@") ? "Must be a valid email" : undefined
+  const error =
+    value.length > 0 && !value.includes("@")
+      ? "Must be a valid email"
+      : undefined
 
   return (
     <FormField

@@ -35,7 +35,9 @@ describe("Button – unit", () => {
   // Unit test that uses a mock function and a user action
   it("calls onPress when tapped", () => {
     const onPressMock = jest.fn()
-    const { getByText } = render(<Button label="Tap me" onPress={onPressMock} />)
+    const { getByText } = render(
+      <Button label="Tap me" onPress={onPressMock} />,
+    )
 
     fireEvent.press(getByText("Tap me"))
 
