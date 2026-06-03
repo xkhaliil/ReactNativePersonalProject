@@ -1,6 +1,7 @@
 import type React from "react"
 import { useCallback, useMemo, useState } from "react"
 import {
+  Pressable,
   RefreshControl,
   SectionList,
   StyleSheet,
@@ -9,54 +10,19 @@ import {
 } from "react-native"
 
 import {
-  ScreenTitle,
-  BodySecondary,
-  Card,
-  Button,
-  Label,
-  typography,
+  borderWidths,
   colors,
-  spacing,
   fontSizes,
+  fontWeights,
+  radii,
+  spacing,
+  typography,
 } from "../../design-system"
 import { useMoodHistory, formatEntryTime, useProfile } from "../../hooks"
-import { type MoodEntry } from "../../hooks/useMoodHistory"
+
+import { groupMoodHistoryByDate } from "./groupMoodHistoryByDate"
 
 const PAGE_SIZE = 20
-
-type Section = {
-  title: string
-  data: MoodEntry[]
-}
-
-function groupByDate(entries: MoodEntry[]): Section[] {
-  const now = new Date()
-  const yesterday = new Date(now)
-  yesterday.setDate(now.getDate() - 1)
-
-  const isSameDay = (a: Date, b: Date): boolean =>
-    a.getFullYear() === b.getFullYear() &&
-    a.getMonth() === b.getMonth() &&
-    a.getDate() === b.getDate()
-
-  const buckets: Record<string, MoodEntry[]> = {}
-  for (const entry of entries) {
-    const d = new Date(entry.timestamp)
-    const key = isSameDay(d, now)
-      ? "Today"
-      : isSameDay(d, yesterday)
-        ? "Yesterday"
-        : d.toLocaleDateString([], {
-            weekday: "short",
-            month: "short",
-            day: "numeric",
-          })
-    buckets[key] ??= []
-    buckets[key].push(entry)
-  }
-
-  return Object.entries(buckets).map(([title, data]) => ({ title, data }))
-}
 
 export default function HistoryScreen(): React.JSX.Element {
   const { entries, clearHistory, loading, refreshing, refresh } =
@@ -65,11 +31,11 @@ export default function HistoryScreen(): React.JSX.Element {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
 
   const greeting = profile.displayName.trim()
-    ? `${profile.displayName}'s recent vibes`
+    ? `${profile.displayName}'s vibes`
     : "Your recent vibes"
 
   const sections = useMemo(
-    () => groupByDate(entries.slice(0, visibleCount)),
+    () => groupMoodHistoryByDate(entries.slice(0, visibleCount)),
     [entries, visibleCount],
   )
 
@@ -101,45 +67,56 @@ export default function HistoryScreen(): React.JSX.Element {
         />
       }
       ListHeaderComponent={
-        <View>
-          <ScreenTitle style={styles.title}>📅 Mood History</ScreenTitle>
-          <BodySecondary style={styles.subtitle}>{greeting}</BodySecondary>
+        <View style={styles.header}>
+          <Text style={styles.title}>History</Text>
+          <Text style={styles.subtitle}>{greeting}</Text>
         </View>
       }
       ListEmptyComponent={
         !loading ? (
-          <Card variant="surface" style={styles.emptyCard}>
+          <View style={styles.emptyCard}>
             <Text style={styles.emptyEmoji}>🎭</Text>
-            <BodySecondary style={styles.emptyText}>
-              No mood scans yet.{"\n"}Head to Discover and scan your first mood!
-            </BodySecondary>
-          </Card>
+            <Text style={styles.emptyTitle}>No scans yet</Text>
+            <Text style={styles.emptyDesc}>
+              Head to Discover and scan your first mood
+            </Text>
+          </View>
         ) : null
       }
       ListFooterComponent={
         entries.length > 0 ? (
-          <Button
-            label="🗑 Clear History"
+          <Pressable
+            style={({ pressed }) => [
+              styles.clearBtn,
+              pressed && styles.clearBtnPressed,
+            ]}
             onPress={clearHistory}
-            variant="ghost"
-          />
+          >
+            <Text style={styles.clearBtnText}>Clear History</Text>
+          </Pressable>
         ) : null
       }
       renderSectionHeader={({ section }) => (
         <View style={styles.sectionHeader}>
-          <Label style={styles.sectionLabel}>{section.title}</Label>
+          <Text style={styles.sectionLabel}>{section.title}</Text>
         </View>
       )}
       renderItem={({ item }) => (
-        <Card variant="leftAccent" accentColor={item.color} style={styles.card}>
-          <Text style={styles.emoji}>{item.emoji}</Text>
-          <View style={styles.info}>
-            <Text style={[typography.moodLabelSm, { color: item.color }]}>
+        <View style={styles.card}>
+          <View style={[styles.accentBar, { backgroundColor: item.color }]} />
+          <View style={styles.emojiBox}>
+            <Text style={styles.emoji}>{item.emoji}</Text>
+          </View>
+          <View style={styles.cardInfo}>
+            <Text style={[styles.moodLabel, { color: item.color }]}>
               {item.mood}
             </Text>
-            <Text style={styles.time}>{formatEntryTime(item.timestamp)}</Text>
+            <Text style={styles.timeLabel}>
+              {formatEntryTime(item.timestamp)}
+            </Text>
           </View>
-        </Card>
+          <View style={[styles.colorDot, { backgroundColor: item.color }]} />
+        </View>
       )}
     />
   )
@@ -148,57 +125,130 @@ export default function HistoryScreen(): React.JSX.Element {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing["2xl"],
-    paddingBottom: spacing["4xl"],
+    paddingHorizontal: spacing.xl,
+    paddingTop: spacing.xl,
+    paddingBottom: spacing["6xl"],
     backgroundColor: colors.bg.screen,
   },
+  header: {
+    marginBottom: spacing["2xl"],
+    gap: spacing.xs,
+  },
   title: {
-    marginBottom: spacing.xs,
+    fontSize: fontSizes["4xl"],
+    fontWeight: fontWeights.bold,
+    color: colors.text.primary,
+    letterSpacing: -0.5,
   },
   subtitle: {
-    marginBottom: spacing["2xl"],
+    ...typography.bodySecondary,
+    color: colors.text.muted,
   },
   sectionHeader: {
     backgroundColor: colors.bg.screen,
-    paddingVertical: spacing.xs,
-    paddingTop: spacing.md,
+    paddingVertical: spacing.sm,
+    paddingTop: spacing.lg,
+    borderBottomWidth: borderWidths.thin,
+    borderBottomColor: colors.border.divider,
+    marginBottom: spacing.xs,
   },
   sectionLabel: {
     color: colors.text.muted,
+    fontSize: fontSizes.xs,
+    fontWeight: fontWeights.bold,
     textTransform: "uppercase",
-    letterSpacing: 1,
+    letterSpacing: 1.5,
   },
   card: {
     flexDirection: "row",
     alignItems: "center",
+    backgroundColor: colors.bg.surface,
+    borderRadius: radii.lg,
+    borderWidth: borderWidths.thin,
+    borderColor: colors.border.subtle,
     marginTop: spacing.sm,
-    gap: spacing.lg,
+    overflow: "hidden",
+    gap: spacing.md,
+    paddingRight: spacing.lg,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  accentBar: {
+    width: 4,
+    alignSelf: "stretch",
+  },
+  emojiBox: {
+    width: 44,
+    height: 44,
+    borderRadius: radii.md,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.bg.surfaceAlt,
   },
   emoji: {
-    fontSize: fontSizes.emojiMd,
+    fontSize: fontSizes.emojiSm,
+    lineHeight: 40,
+    textAlign: "center",
   },
-  info: {
+  cardInfo: {
     flex: 1,
+    paddingVertical: spacing.md,
+    gap: spacing["2xs"],
   },
-  time: {
+  moodLabel: {
+    fontSize: fontSizes.base,
+    fontWeight: fontWeights.bold,
+    textTransform: "uppercase",
+    letterSpacing: 1.5,
+  },
+  timeLabel: {
     color: colors.text.muted,
     fontSize: fontSizes.xs,
-    marginTop: spacing["2xs"],
+  },
+  colorDot: {
+    width: 6,
+    height: 6,
+    borderRadius: radii.full,
+    opacity: 0.8,
   },
   emptyCard: {
     alignItems: "center",
-    paddingVertical: spacing["4xl"],
-    marginTop: spacing.xl,
+    paddingVertical: spacing["5xl"],
+    gap: spacing.md,
   },
   emptyEmoji: {
-    fontSize: fontSizes.emojiXl,
-    marginBottom: spacing.md,
+    fontSize: fontSizes.emojiLg,
   },
-  emptyText: {
+  emptyTitle: {
+    color: colors.text.primary,
+    fontSize: fontSizes.lg,
+    fontWeight: fontWeights.bold,
+  },
+  emptyDesc: {
+    color: colors.text.muted,
+    fontSize: fontSizes.sm,
     textAlign: "center",
+    lineHeight: 20,
   },
-  clearButton: {
-    marginTop: spacing["2xl"],
+  clearBtn: {
+    marginTop: spacing["3xl"],
+    borderWidth: borderWidths.base,
+    borderColor: colors.border.default,
+    borderRadius: radii.full,
+    paddingVertical: spacing.md,
+    alignItems: "center",
+  },
+  clearBtnPressed: {
+    opacity: 0.6,
+    backgroundColor: colors.bg.surface,
+  },
+  clearBtnText: {
+    color: colors.text.muted,
+    fontSize: fontSizes.sm,
+    fontWeight: fontWeights.semibold,
+    letterSpacing: 0.3,
   },
 })

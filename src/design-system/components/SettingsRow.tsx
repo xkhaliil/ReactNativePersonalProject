@@ -8,7 +8,7 @@
 import type React from "react"
 import { StyleSheet, Switch, View } from "react-native"
 
-import { colors, spacing, fontWeights } from "../tokens"
+import { borderWidths, colors, fontWeights, spacing } from "../tokens"
 
 import { Body, Caption } from "./Typography"
 
@@ -39,6 +39,7 @@ export function SettingsRow({
           true: colors.switch.trackOn,
         }}
         thumbColor={colors.switch.thumb}
+        ios_backgroundColor={colors.switch.trackOff}
       />
     </View>
   )
@@ -49,7 +50,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingVertical: spacing.sm,
+    paddingVertical: spacing.md,
+    borderBottomWidth: borderWidths.thin,
+    borderBottomColor: colors.border.divider,
   },
   info: {
     flex: 1,
@@ -57,8 +60,10 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: fontWeights.semibold,
+    color: colors.text.primary,
   },
   desc: {
     marginTop: spacing["2xs"],
+    color: colors.text.muted,
   },
 })

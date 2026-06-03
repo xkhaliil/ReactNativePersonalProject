@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import type React from "react"
+import { StyleSheet } from "react-native"
 
 import { type RootStackParamList } from "#shared"
 
@@ -22,16 +23,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>()
 
 export default function RootNavigator(): React.JSX.Element {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerStyle: { backgroundColor: colors.bg.screen },
-        headerTintColor: colors.accent.default,
-        headerTitleStyle: {
-          color: colors.text.primary,
-          fontWeight: fontWeights.bold,
-        },
-      }}
-    >
+    <Stack.Navigator screenOptions={screenOptions}>
       {/* Primary experience — hides the root header so each tab manages its own */}
       <Stack.Screen
         name="Tabs"
@@ -46,4 +38,25 @@ export default function RootNavigator(): React.JSX.Element {
       />
     </Stack.Navigator>
   )
+}
+
+const styles = StyleSheet.create({
+  header: {
+    backgroundColor: colors.bg.screen,
+  },
+  headerTitle: {
+    color: colors.text.primary,
+    fontWeight: fontWeights.bold,
+  },
+  content: {
+    backgroundColor: colors.bg.screen,
+  },
+})
+
+const screenOptions = {
+  headerStyle: styles.header,
+  headerTintColor: colors.accent.default,
+  headerTitleStyle: styles.headerTitle,
+  headerShadowVisible: false,
+  contentStyle: styles.content,
 }

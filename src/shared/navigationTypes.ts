@@ -50,5 +50,11 @@ export type HomeStackParamList = {
     color: string
     playlistTitle: string
     genre: string
+    /** Real Spotify track strings ("Name – Artist"). Falls back to static list when absent. */
+    tracks?: string[]
+    /** Spotify external URLs for each track, aligned by index with `tracks`. */
+    trackUrls?: string[]
+    /** Spotify URL for the matched playlist — opens directly in the Spotify app. */
+    playlistUrl?: string
   }
 }

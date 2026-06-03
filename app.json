@@ -2,6 +2,7 @@
   "expo": {
     "name": "SkyCast",
     "slug": "SkyCast",
+    "scheme": "skycast",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,7 +15,10 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.xkhaliil.skycast"
+      "bundleIdentifier": "com.xkhaliil.skycast",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "package": "com.xkhaliil.skycast",
@@ -23,7 +27,11 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -33,6 +41,15 @@
         "projectId": "f0886267-f15e-4e2d-95d8-5c2b39c46b79"
       }
     },
-    "owner": "xkhaliil"
+    "owner": "xkhaliil",
+    "plugins": [
+      "expo-web-browser",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera to scan your mood."
+        }
+      ]
+    ]
   }
 }

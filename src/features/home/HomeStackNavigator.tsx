@@ -4,45 +4,38 @@ import {
   type NativeStackNavigationProp,
 } from "@react-navigation/native-stack"
 import type React from "react"
-import { StyleSheet, Text, TouchableOpacity } from "react-native"
+import { Pressable, StyleSheet, Text } from "react-native"
 
 import { type HomeStackParamList, type RootStackParamList } from "#shared"
 
 import {
-  colors,
-  fontWeights,
-  fontSizes,
-  spacing,
   borderWidths,
+  colors,
+  fontSizes,
+  fontWeights,
+  radii,
+  spacing,
 } from "../../design-system"
 
 import HomeScreen from "./HomeScreen"
 import PlaylistDetailScreen from "./PlaylistDetailScreen"
 
-/**
- * HomeStackNavigator — nested Stack navigator (child of MainTabs > HomeTab).
- *
- * Screen map:
- *   Home           → HomeScreen           (scan mood, view playlist cards)
- *   PlaylistDetail → PlaylistDetailScreen (detail view for a playlist card)
- *
- * The ⚙️ button in the Home header escapes this stack and navigates up
- * to the RootStack to open the Settings modal.
- */
 const Stack = createNativeStackNavigator<HomeStackParamList>()
 
-/** Escapes the nested stack and opens Settings in the root modal stack. */
-function SettingsButton() {
+function SettingsButton(): React.JSX.Element {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>()
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={() => navigation.navigate("Settings")}
       hitSlop={borderWidths.heavy}
-      style={styles.settingsButton}
+      style={({ pressed }) => [
+        styles.settingsBtn,
+        pressed && styles.settingsBtnPressed,
+      ]}
     >
-      <Text style={styles.settingsIcon}>⚙️</Text>
-    </TouchableOpacity>
+      <Text style={styles.settingsIcon}>⚙</Text>
+    </Pressable>
   )
 }
 
@@ -50,23 +43,21 @@ export default function HomeStackNavigator(): React.JSX.Element {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: colors.bg.screen },
+        headerStyle: styles.header,
         headerTintColor: colors.accent.default,
-        headerTitleStyle: {
-          color: colors.text.primary,
-          fontWeight: fontWeights.bold,
-        },
+        headerTitleStyle: styles.headerTitle,
+        headerShadowVisible: false,
+        contentStyle: { backgroundColor: colors.bg.screen },
       }}
     >
       <Stack.Screen
         name="Home"
         component={HomeScreen}
         options={{
-          title: "🎧 Mood Playlist",
+          title: "Discover",
           headerRight: () => <SettingsButton />,
         }}
       />
-      {/* Pushed when the user taps a playlist card on the Home screen */}
       <Stack.Screen
         name="PlaylistDetail"
         component={PlaylistDetailScreen}
@@ -79,10 +70,32 @@ export default function HomeStackNavigator(): React.JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  settingsButton: {
-    paddingHorizontal: spacing.xs,
+  header: {
+    backgroundColor: colors.bg.screen,
+  },
+  headerTitle: {
+    color: colors.text.primary,
+    fontWeight: fontWeights.bold,
+    fontSize: fontSizes.lg,
+    letterSpacing: -0.3,
+  },
+  settingsBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: radii.full,
+    borderWidth: borderWidths.thin,
+    borderColor: colors.border.default,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.bg.glass,
+    marginRight: spacing.xs,
+  },
+  settingsBtnPressed: {
+    opacity: 0.65,
+    backgroundColor: colors.bg.surface,
   },
   settingsIcon: {
-    fontSize: fontSizes.xl,
+    fontSize: fontSizes.base,
+    color: colors.text.secondary,
   },
 })

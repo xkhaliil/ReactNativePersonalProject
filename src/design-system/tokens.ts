@@ -12,13 +12,16 @@ import { fontSizes, fontWeights, letterSpacings } from "./primitives/typography"
 // ─── Color Tokens ────────────────────────────────────────────────────────────
 
 export const colors = {
-  // Backgrounds
+  // Backgrounds — layered depth system
   bg: {
-    screen: palette.neutral900,
-    surface: palette.neutral800,
-    surfaceAlt: palette.neutral700,
-    viewfinder: palette.neutral950,
-    input: palette.neutral600,
+    screen: palette.neutral950,
+    surface: palette.neutral850,
+    surfaceAlt: palette.neutral800,
+    surfaceElevated: palette.neutral750,
+    viewfinder: palette.neutral1000,
+    input: palette.neutral700,
+    overlay: palette.black70,
+    glass: palette.white06,
   },
 
   // Text
@@ -26,34 +29,38 @@ export const colors = {
     primary: palette.white,
     secondary: palette.neutral300,
     muted: palette.neutral400,
-    faint: palette.neutral550,
+    faint: palette.neutral450,
     onAccent: palette.black,
   },
 
   // Borders
   border: {
-    default: palette.neutral500,
-    subtle: palette.neutral700,
+    default: palette.white10,
+    subtle: palette.white06,
+    strong: palette.white14,
+    divider: palette.white03,
   },
 
   // Accent / brand
   accent: {
     default: palette.green500,
-    on: palette.black, // text on top of accent bg
+    bright: palette.green400,
+    dim: palette.green700,
+    on: palette.black,
   },
 
   // Tabs
   tab: {
     active: palette.green500,
     inactive: palette.neutral400,
-    bg: palette.neutral900,
-    border: palette.neutral700,
+    bg: palette.neutral950,
+    border: palette.white06,
   },
 
   // Switch
   switch: {
     trackOn: palette.green500,
-    trackOff: palette.neutral600,
+    trackOff: palette.neutral650,
     thumb: palette.white,
   },
 } as const
@@ -65,11 +72,13 @@ export const typography = {
     fontSize: fontSizes["4xl"],
     fontWeight: fontWeights.bold,
     color: colors.text.primary,
+    letterSpacing: -0.5,
   },
   sectionTitle: {
     fontSize: fontSizes["2xl"],
     fontWeight: fontWeights.bold,
     color: colors.text.primary,
+    letterSpacing: -0.3,
   },
   cardTitle: {
     fontSize: fontSizes.lg,
@@ -79,20 +88,24 @@ export const typography = {
   body: {
     fontSize: fontSizes.base,
     color: colors.text.primary,
+    lineHeight: 22,
   },
   bodySecondary: {
     fontSize: fontSizes.sm,
     color: colors.text.secondary,
+    lineHeight: 20,
   },
   caption: {
     fontSize: fontSizes.xs,
     color: colors.text.muted,
+    lineHeight: 18,
   },
   label: {
     fontSize: fontSizes.xs,
     fontWeight: fontWeights.bold,
     letterSpacing: letterSpacings.wide,
     textTransform: "uppercase" as const,
+    color: colors.text.muted,
   },
   moodLabel: {
     fontSize: fontSizes["3xl"],
@@ -111,6 +124,7 @@ export const typography = {
     color: colors.accent.default,
     width: sizes.trackNumber,
     textAlign: "center" as const,
+    fontSize: fontSizes.sm,
   },
 } as const
 

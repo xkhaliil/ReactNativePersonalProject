@@ -1,103 +1,50 @@
 import { useNavigation } from "@react-navigation/native"
 import { type NativeStackNavigationProp } from "@react-navigation/native-stack"
 import type React from "react"
-import { useState } from "react"
 
-import { StyleSheet, View } from "react-native"
+import { StyleSheet, Text, View } from "react-native"
 
 import { type HomeStackParamList } from "#shared"
 
 import {
-  ScreenLayout,
-  ScreenTitle,
   BodySecondary,
-  Label,
   Button,
+  colors,
+  fontSizes,
+  fontWeights,
+  radii,
   spacing,
-  palette,
 } from "../../design-system"
-import { useMoodHistory, useProfile } from "../../hooks"
 
 import MoodCamera from "./MoodCamera"
 import MoodCard from "./MoodCard"
 import PlaylistCard from "./PlaylistCard"
+import { useHomeMood } from "./useHomeMood"
 
 type HomeNavProp = NativeStackNavigationProp<HomeStackParamList, "Home">
 
-type Mood = {
-  emoji: string
-  label: string
-  color: string
-  playlist: {
-    title: string
-    genre: string
-  }
-}
-
-const MOODS: Mood[] = [
-  {
-    emoji: "😊",
-    label: "Happy",
-    color: palette.yellow500,
-    playlist: { title: "Sunshine Hits", genre: "Pop / Indie Pop" },
-  },
-  {
-    emoji: "😢",
-    label: "Sad",
-    color: palette.blue500,
-    playlist: { title: "Rainy Day Blues", genre: "Sad Indie / Lo-Fi" },
-  },
-  {
-    emoji: "😤",
-    label: "Angry",
-    color: palette.orange500,
-    playlist: { title: "Rage Mode 💢", genre: "Metal / Hard Rock" },
-  },
-  {
-    emoji: "😎",
-    label: "Chill",
-    color: palette.cyan500,
-    playlist: { title: "Sunday Vibes", genre: "Chillwave / Lo-Fi" },
-  },
-  {
-    emoji: "🔥",
-    label: "Hype",
-    color: palette.pink500,
-    playlist: { title: "LET'S GO 🔥", genre: "EDM / Hip-Hop" },
-  },
-]
-
 export default function HomeScreen(): React.JSX.Element {
-  const [moodIndex, setMoodIndex] = useState(0)
   const navigation = useNavigation<HomeNavProp>()
-  const { addEntry } = useMoodHistory()
-  const { profile, showGenreHints } = useProfile()
-  const currentMood = MOODS[moodIndex]
-
-  const genreHint =
-    showGenreHints && profile.favouriteGenre.trim()
-      ? `🎼 Suggested Playlist · ${profile.favouriteGenre}`
-      : "🎼 Suggested Playlist"
-
-  const handleScan = () => {
-    const nextIndex = (moodIndex + 1) % MOODS.length
-    const scannedMood = MOODS[nextIndex]
-    setMoodIndex(nextIndex)
-    void addEntry({
-      mood: scannedMood.label,
-      emoji: scannedMood.emoji,
-      color: scannedMood.color,
-    })
-  }
+  const {
+    currentMood,
+    spotifyTracks,
+    playlistUrl,
+    genreHint,
+    isConnected,
+    handleMoodDetected,
+  } = useHomeMood()
 
   return (
-    <ScreenLayout centered>
-      <ScreenTitle style={styles.title}>🎧 Mood Playlist</ScreenTitle>
-      <BodySecondary style={styles.subtitle}>
-        Let your vibe pick your music
-      </BodySecondary>
+    <View style={styles.screen}>
+      <MoodCamera onMoodDetected={handleMoodDetected} />
 
-      <MoodCamera onScan={handleScan} />
+      {!isConnected && (
+        <View style={styles.noticeBadge}>
+          <Text style={styles.noticeText}>
+            Connect Spotify in Settings for real tracks
+          </Text>
+        </View>
+      )}
 
       <MoodCard
         emoji={currentMood.emoji}
@@ -105,48 +52,88 @@ export default function HomeScreen(): React.JSX.Element {
         color={currentMood.color}
       />
 
-      <View style={styles.sectionRow}>
-        <Label style={styles.sectionLabel}>{genreHint}</Label>
+      <View style={styles.playlistSection}>
+        <View style={styles.playlistHeader}>
+          <BodySecondary style={styles.playlistHintLabel}>
+            {genreHint}
+          </BodySecondary>
+        </View>
+
+        <PlaylistCard
+          title={currentMood.playlist.title}
+          genre={currentMood.playlist.genre}
+          moodColor={currentMood.color}
+          spotifyUrl={playlistUrl}
+        />
+
+        <Button
+          label="View Full Playlist →"
+          onPress={(): void =>
+            navigation.navigate("PlaylistDetail", {
+              mood: currentMood.label,
+              emoji: currentMood.emoji,
+              color: currentMood.color,
+              playlistTitle: currentMood.playlist.title,
+              genre: currentMood.playlist.genre,
+              tracks:
+                spotifyTracks.length > 0
+                  ? spotifyTracks.map(
+                      (t) => `${t.name} – ${t.artists[0]?.name ?? ""}`,
+                    )
+                  : undefined,
+              trackUrls:
+                spotifyTracks.length > 0
+                  ? spotifyTracks.map((t) => t.external_urls.spotify)
+                  : undefined,
+              playlistUrl,
+            })
+          }
+          variant="outline"
+          accentColor={currentMood.color}
+        />
       </View>
-
-      <PlaylistCard
-        title={currentMood.playlist.title}
-        genre={currentMood.playlist.genre}
-      />
-
-      <Button
-        label="🎵 View Full Playlist"
-        onPress={() =>
-          navigation.navigate("PlaylistDetail", {
-            mood: currentMood.label,
-            emoji: currentMood.emoji,
-            color: currentMood.color,
-            playlistTitle: currentMood.playlist.title,
-            genre: currentMood.playlist.genre,
-          })
-        }
-        variant="outline"
-        accentColor={currentMood.color}
-      />
-
-      <Button label="🔀 Change Mood" onPress={handleScan} variant="ghost" />
-    </ScreenLayout>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
-  title: {
-    marginBottom: spacing.xs,
+  screen: {
+    flex: 1,
+    backgroundColor: colors.bg.screen,
+    paddingBottom: spacing["6xl"],
   },
-  subtitle: {
-    marginBottom: spacing["3xl"],
-  },
-  sectionRow: {
-    width: "100%",
+  noticeBadge: {
+    marginHorizontal: spacing.xl,
     marginTop: spacing.sm,
+    backgroundColor: colors.bg.surfaceAlt,
+    borderRadius: radii.full,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.lg,
+    borderWidth: 1,
+    borderColor: colors.border.default,
+    alignItems: "center",
+  },
+  noticeText: {
+    color: colors.text.muted,
+    fontSize: fontSizes.xs,
+    fontWeight: fontWeights.semibold,
+    letterSpacing: 0.2,
+  },
+  playlistSection: {
+    paddingHorizontal: spacing.xl,
+    gap: spacing.sm,
+  },
+  playlistHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: spacing.xs,
   },
-  sectionLabel: {
-    color: undefined,
+  playlistHintLabel: {
+    color: colors.text.muted,
+    fontSize: fontSizes.xs,
+    fontWeight: fontWeights.semibold,
+    textTransform: "uppercase",
+    letterSpacing: 1.2,
   },
 })

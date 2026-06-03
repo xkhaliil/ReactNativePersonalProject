@@ -1,39 +1,49 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import type React from "react"
 
-import { StyleSheet, Text } from "react-native"
+import { StyleSheet, Text, View } from "react-native"
 
 import { type MainTabParamList } from "#shared"
 
-import { colors, sizes, borderWidths } from "../design-system"
+import {
+  borderWidths,
+  colors,
+  fontSizes,
+  fontWeights,
+  radii,
+  sizes,
+  spacing,
+} from "../design-system"
 import { HistoryScreen } from "../features/history"
 import { HomeStackNavigator } from "../features/home"
 import { ProfileScreen } from "../features/profile"
 
-/**
- * MainTabNavigator — Bottom Tabs navigator (child of RootStack > Tabs).
- *
- * Tab map:
- *   HomeTab  → HomeStackNavigator  (nested Stack: Home → PlaylistDetail)
- *   History  → HistoryScreen       (flat screen)
- *   Profile  → ProfileScreen       (flat screen)
- *
- * The HomeTab hosts its own Stack so navigation between Home and
- * PlaylistDetail stays scoped inside the Discover tab.
- */
 const Tab = createBottomTabNavigator<MainTabParamList>()
 
-const TAB_ICONS: Record<string, string> = {
-  HomeTab: "🎧",
-  History: "📅",
-  Profile: "👤",
+type TabIconProps = {
+  label: string
+  focused: boolean
 }
 
-function TabIcon({ label, focused }: { label: string; focused: boolean }) {
+const TAB_CONFIG: Record<string, { icon: string; title: string }> = {
+  HomeTab: { icon: "◎", title: "Discover" },
+  History: { icon: "≡", title: "History" },
+  Profile: { icon: "○", title: "Profile" },
+}
+
+function TabIcon({ label, focused }: TabIconProps): React.JSX.Element {
+  const config = TAB_CONFIG[label] ?? { icon: "•", title: label }
   return (
-    <Text style={focused ? styles.iconFocused : styles.iconDefault}>
-      {TAB_ICONS[label]}
-    </Text>
+    <View style={[styles.tabItem, focused && styles.tabItemFocused]}>
+      <Text
+        style={[
+          styles.tabIcon,
+          focused ? styles.tabIconFocused : styles.tabIconDefault,
+        ]}
+      >
+        {config.icon}
+      </Text>
+    </View>
   )
 }
 
@@ -42,19 +52,15 @@ export default function MainTabNavigator(): React.JSX.Element {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarStyle: {
-          backgroundColor: colors.tab.bg,
-          borderTopColor: colors.tab.border,
-          borderTopWidth: borderWidths.thin,
-        },
+        tabBarStyle: styles.tabBar,
         tabBarActiveTintColor: colors.tab.active,
         tabBarInactiveTintColor: colors.tab.inactive,
+        tabBarLabelStyle: styles.tabLabel,
         tabBarIcon: ({ focused }) => (
           <TabIcon label={route.name} focused={focused} />
         ),
       })}
     >
-      {/* Discover: nested Stack handles Home ↔ PlaylistDetail transitions */}
       <Tab.Screen
         name="HomeTab"
         component={HomeStackNavigator}
@@ -75,12 +81,41 @@ export default function MainTabNavigator(): React.JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  iconFocused: {
-    fontSize: sizes.tabIconFocused,
-    opacity: 1,
+  tabBar: {
+    backgroundColor: colors.tab.bg,
+    borderTopColor: colors.tab.border,
+    borderTopWidth: borderWidths.thin,
+    height: sizes.tabBarHeight,
+    paddingBottom: spacing.sm,
+    paddingTop: spacing.xs,
+    elevation: 0,
+    shadowOpacity: 0,
   },
-  iconDefault: {
+  tabItem: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: 32,
+    height: 32,
+    borderRadius: radii.md,
+  },
+  tabItemFocused: {
+    backgroundColor: `${colors.accent.default}18`,
+  },
+  tabIcon: {
     fontSize: sizes.tabIconDefault,
-    opacity: 0.5,
+    lineHeight: sizes.tabIconDefault + 4,
+  },
+  tabIconFocused: {
+    color: colors.tab.active,
+    fontSize: sizes.tabIconFocused,
+    fontWeight: fontWeights.bold,
+  },
+  tabIconDefault: {
+    color: colors.tab.inactive,
+  },
+  tabLabel: {
+    fontSize: fontSizes.xs,
+    fontWeight: fontWeights.semibold,
+    marginTop: 2,
   },
 })

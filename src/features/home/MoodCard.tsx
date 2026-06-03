@@ -1,7 +1,14 @@
 import type React from "react"
-import { StyleSheet, Text } from "react-native"
+import { StyleSheet, Text, View } from "react-native"
 
-import { Card, typography, spacing, fontSizes } from "../../design-system"
+import {
+  borderWidths,
+  colors,
+  fontSizes,
+  fontWeights,
+  radii,
+  spacing,
+} from "../../design-system"
 
 type MoodCardProps = {
   emoji: string
@@ -14,22 +21,86 @@ export default function MoodCard({
   label,
   color,
 }: MoodCardProps): React.JSX.Element {
+  // Create a subtle tinted background using hex + alpha
+  const tintBg = `${color}18`
+  const tintBorder = `${color}40`
+
   return (
-    <Card variant="bordered" accentColor={color} style={styles.card}>
-      <Text style={styles.emoji}>{emoji}</Text>
-      <Text style={[typography.moodLabel, { color }]}>{label}</Text>
-    </Card>
+    <View style={styles.wrapper}>
+      <View
+        style={[
+          styles.card,
+          { backgroundColor: tintBg, borderColor: tintBorder },
+        ]}
+      >
+        <View style={styles.emojiContainer}>
+          <Text style={styles.emoji}>{emoji}</Text>
+        </View>
+
+        <View style={styles.textBlock}>
+          <Text style={styles.detectedLabel}>Mood detected</Text>
+          <Text style={[styles.moodLabel, { color }]}>{label}</Text>
+        </View>
+
+        {/* Accent dot */}
+        <View style={[styles.dot, { backgroundColor: color }]} />
+      </View>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
+  wrapper: {
+    paddingHorizontal: spacing.xl,
+    paddingVertical: spacing.xs,
+  },
   card: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: radii.xl,
+    borderWidth: borderWidths.base,
+    padding: spacing.lg,
+    gap: spacing.lg,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  emojiContainer: {
+    width: 52,
+    height: 52,
     alignItems: "center",
     justifyContent: "center",
-    marginVertical: spacing.md,
-    width: "100%",
+    backgroundColor: colors.bg.glass,
+    borderRadius: radii.lg,
   },
   emoji: {
-    fontSize: fontSizes.emojiXl,
+    fontSize: fontSizes.emojiSm,
+  },
+  textBlock: {
+    flex: 1,
+    gap: spacing["2xs"],
+  },
+  detectedLabel: {
+    color: colors.text.muted,
+    fontSize: fontSizes.xs,
+    fontWeight: fontWeights.semibold,
+    textTransform: "uppercase",
+    letterSpacing: 1.2,
+  },
+  moodLabel: {
+    fontSize: fontSizes["2xl"],
+    fontWeight: fontWeights.bold,
+    textTransform: "uppercase",
+    letterSpacing: 2,
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: radii.full,
+    alignSelf: "flex-start",
+    marginTop: 4,
+    opacity: 0.9,
   },
 })

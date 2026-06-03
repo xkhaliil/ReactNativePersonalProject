@@ -1,23 +1,25 @@
-# 🎧 SkyCast — Mood Playlist
+# SpotifyMood
 
 ## What is this?
 
-SkyCast helps you find music that matches how you feel, right now. You open the app, tap **Scan My Mood**, and the app picks an emotion (Happy, Sad, Angry, Chill, or Hype) and instantly surfaces a curated playlist to go with it. Every scan is saved to a personal history so you can look back at your mood patterns over time, browse past playlists, and clear entries whenever you want. A profile screen lets you personalize the experience with a display name, bio, and preferred genres, while a settings screen controls haptic feedback and other preferences — all persisted locally so nothing is lost between sessions.
+SpotifyMood helps you discover music that matches how you feel in the moment. On the Discover tab you scan your mood with the front camera, and the app suggests a curated playlist aligned with that emotion (Happy, Sad, Angry, Chill, or Hype). When you connect Spotify, recommendations and track lists come from the real Spotify API; otherwise the app still works with built-in fallback playlists. Every scan is saved to a personal history you can browse, pull to refresh, and paginate by date. Profile and Settings let you customize your display name, bio, favourite genre, haptic feedback, and Spotify connection — all persisted on-device so your preferences survive restarts.
 
 ## How it's built
 
-SkyCast is a React Native app built on **Expo SDK 54** (New Architecture enabled) and written entirely in **TypeScript** with strict type-checking. Navigation uses a three-level React Navigation structure: a root `NativeStackNavigator` owns the app shell and a global Settings modal; inside it, a `BottomTabNavigator` provides the three main tabs (Discover, History, Profile); the Discover tab itself contains a nested `NativeStackNavigator` that handles the Home → PlaylistDetail push transition. All persistent state (mood history, profile, settings) is stored on-device via **AsyncStorage**. Haptic feedback is delivered through **expo-haptics**. The project is organised by feature (`features/`, `hooks/`, `navigation/`, `design-system/`) with a shared public API barrel at `src/shared/index.ts` aliased as `#shared`. Code quality is enforced by **ESLint** (`@christopherjbaker/eslint-config/react-strict`), **Prettier**, **TypeScript**, and **Knip**. Tests are written with **Jest 29 + jest-expo + React Native Testing Library**. CI runs lint checks and the test suite on every push via **GitHub Actions**, and preview builds for Android (APK) and iOS (Simulator) are published through **EAS Build** on every merge to `main`.
+SpotifyMood is a React Native app on **Expo SDK 54** (New Architecture) written in **TypeScript** with strict checking. Navigation uses React Navigation 7 in three layers: a root `NativeStackNavigator` (tabs + Settings modal), a `BottomTabNavigator` (Discover, History, Profile), and a nested stack inside Discover (Home → Playlist Detail). Feature code lives under `src/features/` with public barrels (modlets); cross-cutting types and navigation param lists are exposed only via `#shared`. Persistence uses **AsyncStorage** through `useStorage` — never imported in screens. Device features are abstracted in hooks: **expo-camera** via `useMoodCamera`, **expo-haptics** via `useHaptics`. Styling is centralized in `design-system/` (tokens + primitives + reusable components); screens keep minimal layout styles. Tests use **Jest 29**, **jest-expo**, and **React Native Testing Library**. CI runs typecheck, ESLint, Prettier, Knip, and tests as separate steps; **EAS Build** runs on pushes to `main`.
 
 **Key tech stack:**
 
 - Expo SDK 54 / React Native 0.81 / React 19
 - TypeScript 5.9 (strict)
 - React Navigation 7 (native-stack + bottom-tabs)
-- AsyncStorage — on-device persistence
-- expo-haptics — tactile feedback
-- Jest 29 + jest-expo + React Native Testing Library — unit & integration tests
-- ESLint + Prettier + Knip — linting & dead-code detection
-- EAS Build (Expo Application Services) — cloud builds for Android & iOS
+- AsyncStorage — mood history, profile, settings, Spotify tokens
+- expo-camera — mood scan capture
+- expo-haptics — mood-specific feedback patterns
+- Spotify Web API + OAuth PKCE (expo-auth-session) — optional live recommendations
+- Jest 29 + React Native Testing Library
+- ESLint + Prettier + Knip
+- GitHub Actions + EAS Build
 
 ## Getting started
 
@@ -25,86 +27,91 @@ SkyCast is a React Native app built on **Expo SDK 54** (New Architecture enabled
 
 - **Node.js** ≥ 20
 - **npm** ≥ 10
-- **Expo Go** installed on your phone, or an Android Emulator / iOS Simulator
-- _(For builds only)_ An [Expo account](https://expo.dev) and `eas-cli` (`npm i -g eas-cli`)
+- **Expo Go** on a device, or Android Emulator / iOS Simulator
+- _(Optional)_ [Spotify Developer](https://developer.spotify.com/dashboard) app for live tracks
+- _(For CI builds)_ [Expo account](https://expo.dev) and `eas-cli` (`npm i -g eas-cli`)
 
 ### Environment variables
 
-This project has **no required environment variables** for local development — all data is stored on-device. The only external credential is an **Expo token** used by CI:
+Copy `.env.example` to `.env` and fill in values as needed:
 
-| Secret       | Where                                      | Purpose                       |
-| ------------ | ------------------------------------------ | ----------------------------- |
-| `EXPO_TOKEN` | GitHub repo → Settings → Secrets → Actions | Authenticates EAS Build in CI |
+| Variable | Required | Purpose |
+| -------- | -------- | ------- |
+| `EXPO_PUBLIC_SPOTIFY_CLIENT_ID` | No (local demo works without) | Spotify OAuth + API recommendations |
+| `EXPO_TOKEN` | CI only (GitHub secret) | Authenticates EAS Build in GitHub Actions |
 
-To create a token: log in to [expo.dev](https://expo.dev) → left sidebar → **Access tokens** → **Create token**.
+**Spotify setup (optional):**
+
+1. Create an app at https://developer.spotify.com/dashboard
+2. Add redirect URIs: `skycast://spotify-auth` and your Expo Go URL (e.g. `exp://192.168.x.x:8081`)
+3. Paste the Client ID into `.env` as `EXPO_PUBLIC_SPOTIFY_CLIENT_ID`
+
+PKCE is used — no client secret is required on mobile.
 
 ### Local development
 
 ```bash
-# 1. Install dependencies
 npm install
-
-# 2. Start the dev server
-npm start          # opens Expo Dev Tools — scan QR with Expo Go
-npm run android    # launch on Android emulator/device
-npm run ios        # launch on iOS simulator
+npm start          # Expo Dev Tools — scan QR with Expo Go
+npm run android    # Android emulator/device
+npm run ios        # iOS simulator
 ```
 
 ### Running checks
 
 ```bash
-npm run lint        # typecheck + ESLint + Prettier + Knip (all in one)
-npm test            # Jest test suite (33 tests across 6 files)
+npm run lint-typecheck   # TypeScript only
+npm run lint-eslint      # ESLint only
+npm run lint-prettier    # Prettier only
+npm run lint-knip        # Dead-code check
+npm run lint             # All of the above
+npm test                 # Jest (smoke, unit, integration tests)
 ```
 
 ### EAS cloud builds
 
 ```bash
-# First-time setup (interactive, run once)
 eas init
-eas build --profile preview --platform all   # interactive
+eas build --profile preview --platform all
 ```
 
-Subsequent preview builds run automatically via GitHub Actions on every push to `main`.
+Preview builds also run automatically on push to `main` when `EXPO_TOKEN` is configured in GitHub Secrets.
 
 ## Project structure
 
 ```
 src/
-  index.ts                    # app entry point
-  App.tsx                     # NavigationContainer wrapper
-  shared/                     # cross-feature public API (#shared alias)
-    index.ts                  # re-exports types used across features
-    navigationTypes.ts        # all ParamList types + navigation tree diagram
-    colors.ts                 # semantic colour tokens (shared read)
-  design-system/              # reusable UI components + tokens
-    tokens.ts                 # spacing, colour, typography, radius tokens
-    index.ts                  # public barrel (components + tokens)
-    components/               # Button, Card, FormField, Typography, …
-    primitives/               # raw scale values (spacing, borders, …)
-  features/                   # feature modules (self-contained)
-    home/                     # Discover tab: scan + playlist cards
-    history/                  # History tab: SectionList of past scans
-    profile/                  # Profile tab: display name, bio, genres
-    settings/                 # Settings modal: haptics toggle, …
-  hooks/                      # shared business-logic hooks
-    useStorage.ts             # generic AsyncStorage wrapper
-    useMoodHistory.ts         # scan history CRUD + refresh
-    useProfile.ts             # profile read/write + validation
-    useSettings.ts            # app settings read/write
-    useHaptics.ts             # haptic feedback abstraction
-  navigation/                 # navigator components (routing only)
-    RootNavigator.tsx         # root Stack (Tabs + Settings modal)
-    MainTabNavigator.tsx      # bottom tabs (Discover / History / Profile)
+  index.ts                 # entry (main in package.json)
+  App.tsx                  # NavigationContainer only — minimal shell
+  shared/                  # public API (#shared alias)
+  design-system/           # tokens, primitives, reusable UI
+  features/                # feature modules (home, history, profile, settings, spotify)
+  hooks/                   # persistence, haptics, camera abstraction
+  navigation/              # Root + tab navigators (routing only)
 ```
 
-> The Discover tab's nested stack lives in `src/features/home/HomeStackNavigator.tsx` — co-located with the screens it owns.
+Import rules:
 
-- **Mood history** — Store past mood scans with timestamps using `expo-sqlite` or AsyncStorage
-- **Animated scan effect** — Pulsing ring animation on the camera viewfinder while "scanning"
-- **Haptic feedback** — Use `expo-haptics` to buzz on mood detection
-- **Playlist preview** — Embed Spotify's 30-second track previews with `expo-av`
-- **Share your vibe** — Screenshot the mood card and share via `expo-sharing`
-- **Dark / Light theme toggle** — Use React Context + `useColorScheme` for theming
-- **Multiple moods per scan** — Show a confidence breakdown (e.g. 70% Happy, 30% Chill)
-- **Onboarding flow** — First-launch walkthrough with `react-native-reanimated` transitions
+- Cross-feature types/navigation: `import { … } from "#shared"`
+- Feature internals: import from that feature's `index.ts` barrel
+- Design system: `import { Button, colors } from "../design-system"` (or feature-relative path)
+- Never import from another feature's subfolders directly
+
+## Course requirements checklist
+
+| Requirement | Where |
+| ----------- | ----- |
+| Multiple components + hooks | Design system + feature screens; `useState`, `useEffect`, `useCallback`, `useMemo`, etc. |
+| StyleSheet in every component | All `.tsx` UI files including navigators and Typography |
+| Root Stack + Tabs + nested Stack | `RootNavigator` → `MainTabNavigator` → `HomeStackNavigator` |
+| Feature-based + modlets | `src/features/*/index.ts` barrels |
+| `#shared` alias | `tsconfig.json` paths; Jest `moduleNameMapper` |
+| Primitives separate from components | `design-system/primitives/` |
+| Reusability documented | Comments on Button (HIGH) vs ScreenLayout (LOW), etc. |
+| Persistence in hooks | `useStorage`, `useMoodHistory`, `useProfile`, `useSettings` |
+| Device features abstracted | `useMoodCamera`, `useHaptics` |
+| TextInput + Switch + storage | Profile (`FormField`), Settings/Profile (`SettingsRow`) |
+| Logic vs rendering | `useHomeMood`, `groupMoodHistoryByDate`, `playlistTracks`, `useProfile` validation |
+| Tests | `design-system/components/__tests__/` — smoke, unit (mock + press), integration |
+| CI/CD | `.github/workflows/ci.yml` — lint steps + tests + EAS on main |
+| SectionList + FlatList | `HistoryScreen` (pull-to-refresh, `onEndReached`); `PlaylistDetailScreen` |

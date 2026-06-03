@@ -12,8 +12,9 @@ export const spacing = {
   lg: 16,
   xl: 20,
   "2xl": 24,
-  "3xl": 28,
-  "4xl": 36,
-  "5xl": 40,
-  "6xl": 48,
+  "3xl": 32,
+  "4xl": 40,
+  "5xl": 48,
+  "6xl": 64,
+  "7xl": 80,
 } as const

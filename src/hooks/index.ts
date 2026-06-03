@@ -1,4 +1,6 @@
 export { useStorage } from "./useStorage"
+export { useMoodCamera } from "./useMoodCamera"
+export { MoodCameraPreview } from "./MoodCameraPreview"
 export { useHaptics } from "./useHaptics"
 export { useMoodHistory, formatEntryTime } from "./useMoodHistory"
 export type { MoodEntry } from "./useMoodHistory"

@@ -53,26 +53,31 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
   },
   label: {
-    marginBottom: spacing.xs,
+    marginBottom: spacing.sm,
     fontWeight: "600",
+    color: colors.text.secondary,
+    fontSize: 13,
+    letterSpacing: 0.3,
   },
   input: {
-    backgroundColor: colors.bg.input,
+    backgroundColor: colors.bg.surfaceAlt,
     color: colors.text.primary,
     fontSize: fontSizes.base,
     borderRadius: radii.lg,
-    borderWidth: borderWidths.thin,
-    borderColor: colors.border.subtle,
+    borderWidth: borderWidths.base,
+    borderColor: colors.border.default,
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,
+    minHeight: 48,
   },
   inputError: {
-    borderColor: colors.accent.default,
+    borderColor: "#FF453A",
   },
   hint: {
     marginTop: spacing.xs,
+    color: colors.text.muted,
   },
   hintError: {
-    color: colors.accent.default,
+    color: "#FF453A",
   },
 })

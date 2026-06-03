@@ -8,12 +8,12 @@
 import type React from "react"
 import { StyleSheet, View, type ViewProps } from "react-native"
 
-import { colors, spacing, radii, borderWidths } from "../tokens"
+import { borderWidths, colors, radii, spacing } from "../tokens"
 
 type CardVariant =
-  | "surface" // Standard card (#1E1E1E)
-  | "surfaceAlt" // Slightly lighter surface (#282828)
-  | "bordered" // Surface with a colored border
+  | "surface" // Standard card
+  | "surfaceAlt" // Slightly elevated surface
+  | "bordered" // Surface with a colored accent border
   | "leftAccent" // Horizontal list item with a left colored stripe
 
 type CardProps = ViewProps & {
@@ -57,14 +57,24 @@ const styles = StyleSheet.create({
   base: {
     borderRadius: radii.xl,
     padding: spacing["2xl"],
+    // Elevation / shadow
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 4,
   },
   surface: {
     backgroundColor: colors.bg.surface,
+    borderWidth: borderWidths.thin,
+    borderColor: colors.border.subtle,
   },
   surfaceAlt: {
     backgroundColor: colors.bg.surfaceAlt,
     borderRadius: radii.lg,
     padding: spacing.lg,
+    borderWidth: borderWidths.thin,
+    borderColor: colors.border.subtle,
   },
   bordered: {
     backgroundColor: colors.bg.surface,
@@ -77,5 +87,7 @@ const styles = StyleSheet.create({
     borderLeftWidth: borderWidths.heavy,
     borderLeftColor: colors.border.default,
     padding: spacing.lg,
+    borderWidth: borderWidths.thin,
+    borderColor: colors.border.subtle,
   },
 })
