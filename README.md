@@ -35,10 +35,10 @@ SpotifyMood is a React Native app on **Expo SDK 54** (New Architecture) written 
 
 Copy `.env.example` to `.env` and fill in values as needed:
 
-| Variable | Required | Purpose |
-| -------- | -------- | ------- |
-| `EXPO_PUBLIC_SPOTIFY_CLIENT_ID` | No (local demo works without) | Spotify OAuth + API recommendations |
-| `EXPO_TOKEN` | CI only (GitHub secret) | Authenticates EAS Build in GitHub Actions |
+| Variable                        | Required                      | Purpose                                   |
+| ------------------------------- | ----------------------------- | ----------------------------------------- |
+| `EXPO_PUBLIC_SPOTIFY_CLIENT_ID` | No (local demo works without) | Spotify OAuth + API recommendations       |
+| `EXPO_TOKEN`                    | CI only (GitHub secret)       | Authenticates EAS Build in GitHub Actions |
 
 **Spotify setup (optional):**
 
@@ -107,20 +107,20 @@ flowchart TD
   Detail -->|Back| Home
 ```
 
-| Level | Navigator | File | Screens |
-| ----- | ----------- | ---- | ------- |
-| 1 — Root | Native Stack | `RootNavigator.tsx` | `Tabs` (initial), `Settings` (modal) |
-| 2 — Tabs | Bottom Tabs | `MainTabNavigator.tsx` | `HomeTab`, `History`, `Profile` |
-| 3 — Nested | Native Stack | `HomeStackNavigator.tsx` | `Home`, `PlaylistDetail` |
+| Level      | Navigator    | File                     | Screens                              |
+| ---------- | ------------ | ------------------------ | ------------------------------------ |
+| 1 — Root   | Native Stack | `RootNavigator.tsx`      | `Tabs` (initial), `Settings` (modal) |
+| 2 — Tabs   | Bottom Tabs  | `MainTabNavigator.tsx`   | `HomeTab`, `History`, `Profile`      |
+| 3 — Nested | Native Stack | `HomeStackNavigator.tsx` | `Home`, `PlaylistDetail`             |
 
 **Where navigation is triggered**
 
-| From | Action | API |
-| ---- | ------ | --- |
-| Discover header | ⚙️ | `navigateToSettings(useRootNavigation())` |
-| Discover | View Full Playlist | `navigateToPlaylistDetail(...)` |
-| Playlist Detail | ← Back | `navigation.goBack()` |
-| Tab bar | Switch tab | Built-in tab navigator |
+| From            | Action             | API                                       |
+| --------------- | ------------------ | ----------------------------------------- |
+| Discover header | ⚙️                 | `navigateToSettings(useRootNavigation())` |
+| Discover        | View Full Playlist | `navigateToPlaylistDetail(...)`           |
+| Playlist Detail | ← Back             | `navigation.goBack()`                     |
+| Tab bar         | Switch tab         | Built-in tab navigator                    |
 
 ## Project structure
 
@@ -144,19 +144,19 @@ Import rules:
 
 ## Course requirements checklist
 
-| Requirement | Where |
-| ----------- | ----- |
-| Multiple components + hooks | Design system + feature screens; `useState`, `useEffect`, `useCallback`, `useMemo`, etc. |
-| StyleSheet in every component | All `.tsx` UI files including navigators and Typography |
-| Root Stack + Tabs + nested Stack | `navigation/` — see **Navigation** section above |
-| Feature-based + modlets | `src/features/*/index.ts` barrels |
-| `#shared` alias | `tsconfig.json` paths; Jest `moduleNameMapper` |
-| Primitives separate from components | `design-system/primitives/` |
-| Reusability documented | Comments on Button (HIGH) vs ScreenLayout (LOW), etc. |
-| Persistence in hooks | `useStorage`, `useMoodHistory`, `useProfile`, `useSettings` |
-| Device features abstracted | `useMoodCamera`, `useHaptics` |
-| TextInput + Switch + storage | Profile (`FormField`), Settings/Profile (`SettingsRow`) |
-| Logic vs rendering | `useHomeMood`, `groupMoodHistoryByDate`, `playlistTracks`, `useProfile` validation |
-| Tests | `design-system/components/__tests__/` — smoke, unit (mock + press), integration |
-| CI/CD | `.github/workflows/ci.yml` — lint steps + tests + EAS on main |
-| SectionList + FlatList | `HistoryScreen` (pull-to-refresh, `onEndReached`); `PlaylistDetailScreen` |
+| Requirement                         | Where                                                                                    |
+| ----------------------------------- | ---------------------------------------------------------------------------------------- |
+| Multiple components + hooks         | Design system + feature screens; `useState`, `useEffect`, `useCallback`, `useMemo`, etc. |
+| StyleSheet in every component       | All `.tsx` UI files including navigators and Typography                                  |
+| Root Stack + Tabs + nested Stack    | `navigation/` — see **Navigation** section above                                         |
+| Feature-based + modlets             | `src/features/*/index.ts` barrels                                                        |
+| `#shared` alias                     | `tsconfig.json` paths; Jest `moduleNameMapper`                                           |
+| Primitives separate from components | `design-system/primitives/`                                                              |
+| Reusability documented              | Comments on Button (HIGH) vs ScreenLayout (LOW), etc.                                    |
+| Persistence in hooks                | `useStorage`, `useMoodHistory`, `useProfile`, `useSettings`                              |
+| Device features abstracted          | `useMoodCamera`, `useHaptics`                                                            |
+| TextInput + Switch + storage        | Profile (`FormField`), Settings/Profile (`SettingsRow`)                                  |
+| Logic vs rendering                  | `useHomeMood`, `groupMoodHistoryByDate`, `playlistTracks`, `useProfile` validation       |
+| Tests                               | `design-system/components/__tests__/` — smoke, unit (mock + press), integration          |
+| CI/CD                               | `.github/workflows/ci.yml` — lint steps + tests + EAS on main                            |
+| SectionList + FlatList              | `HistoryScreen` (pull-to-refresh, `onEndReached`); `PlaylistDetailScreen`                |

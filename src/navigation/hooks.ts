@@ -3,14 +3,9 @@
  */
 
 import { useNavigation } from "@react-navigation/native"
-import {
-  type NativeStackNavigationProp,
-} from "@react-navigation/native-stack"
+import { type NativeStackNavigationProp } from "@react-navigation/native-stack"
 
-import {
-  type HomeStackParamList,
-  type RootStackParamList,
-} from "#shared"
+import { type HomeStackParamList, type RootStackParamList } from "#shared"
 
 import { ROUTES } from "./routes"
 

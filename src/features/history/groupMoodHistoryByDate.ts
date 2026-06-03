@@ -5,7 +5,9 @@ export type MoodHistorySection = {
   data: MoodEntry[]
 }
 
-export function groupMoodHistoryByDate(entries: MoodEntry[]): MoodHistorySection[] {
+export function groupMoodHistoryByDate(
+  entries: MoodEntry[],
+): MoodHistorySection[] {
   const now = new Date()
   const yesterday = new Date(now)
   yesterday.setDate(now.getDate() - 1)

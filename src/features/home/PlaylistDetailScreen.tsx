@@ -22,10 +22,7 @@ import {
 } from "../../design-system"
 import { useHomeStackNavigation } from "../../navigation"
 
-import {
-  buildPlaylistTrackRows,
-  type PlaylistTrackRow,
-} from "./playlistTracks"
+import { buildPlaylistTrackRows, type PlaylistTrackRow } from "./playlistTracks"
 
 type PlaylistDetailRouteProp = RouteProp<HomeStackParamList, "PlaylistDetail">
 

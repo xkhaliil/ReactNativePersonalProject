@@ -15,6 +15,10 @@ export function MoodCameraPreview({
   cameraRef,
 }: MoodCameraPreviewProps): React.JSX.Element {
   return (
-    <CameraView ref={cameraRef} style={StyleSheet.absoluteFill} facing="front" />
+    <CameraView
+      ref={cameraRef}
+      style={StyleSheet.absoluteFill}
+      facing="front"
+    />
   )
 }

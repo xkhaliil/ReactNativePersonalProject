@@ -4,11 +4,7 @@ import { StyleSheet } from "react-native"
 
 import { type HomeStackParamList } from "#shared"
 
-import {
-  colors,
-  fontSizes,
-  fontWeights,
-} from "../design-system"
+import { colors, fontSizes, fontWeights } from "../design-system"
 import HomeScreen from "../features/home/HomeScreen"
 import PlaylistDetailScreen from "../features/home/PlaylistDetailScreen"
 
