@@ -5,7 +5,7 @@
  * Rendering uses MoodCameraPreview from this hooks package.
  */
 
-import { CameraView, useCameraPermissions } from "expo-camera"
+import { useCameraPermissions, type CameraView } from "expo-camera"
 import { useCallback, useRef, useState, type RefObject } from "react"
 
 type UseMoodCameraOptions = {

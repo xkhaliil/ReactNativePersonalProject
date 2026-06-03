@@ -12,8 +12,6 @@ import {
 
 import { type HomeStackParamList } from "#shared"
 
-import { useHomeStackNavigation } from "../../navigation"
-
 import {
   borderWidths,
   colors,
@@ -22,6 +20,7 @@ import {
   radii,
   spacing,
 } from "../../design-system"
+import { useHomeStackNavigation } from "../../navigation"
 
 import {
   buildPlaylistTrackRows,
@@ -90,9 +89,10 @@ export default function PlaylistDetailScreen(): React.JSX.Element {
     )
 
     if (item.spotifyUrl !== undefined) {
+      const spotifyUrl = item.spotifyUrl
       return (
         <Pressable
-          onPress={() => openInSpotify(item.spotifyUrl!)}
+          onPress={() => openInSpotify(spotifyUrl)}
           style={({ pressed }) => [
             styles.trackItem,
             pressed && styles.trackRowPressed,
