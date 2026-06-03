@@ -26,14 +26,14 @@ SkyCast is a React Native app built on **Expo SDK 54** (New Architecture enabled
 - **Node.js** ≥ 20
 - **npm** ≥ 10
 - **Expo Go** installed on your phone, or an Android Emulator / iOS Simulator
-- *(For builds only)* An [Expo account](https://expo.dev) and `eas-cli` (`npm i -g eas-cli`)
+- _(For builds only)_ An [Expo account](https://expo.dev) and `eas-cli` (`npm i -g eas-cli`)
 
 ### Environment variables
 
 This project has **no required environment variables** for local development — all data is stored on-device. The only external credential is an **Expo token** used by CI:
 
-| Secret | Where | Purpose |
-|---|---|---|
+| Secret       | Where                                      | Purpose                       |
+| ------------ | ------------------------------------------ | ----------------------------- |
 | `EXPO_TOKEN` | GitHub repo → Settings → Secrets → Actions | Authenticates EAS Build in CI |
 
 To create a token: log in to [expo.dev](https://expo.dev) → left sidebar → **Access tokens** → **Create token**.
