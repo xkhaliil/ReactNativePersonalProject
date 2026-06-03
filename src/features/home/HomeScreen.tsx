@@ -1,10 +1,6 @@
-import { useNavigation } from "@react-navigation/native"
-import { type NativeStackNavigationProp } from "@react-navigation/native-stack"
 import type React from "react"
 
 import { StyleSheet, Text, View } from "react-native"
-
-import { type HomeStackParamList } from "#shared"
 
 import {
   BodySecondary,
@@ -16,15 +12,18 @@ import {
   spacing,
 } from "../../design-system"
 
+import {
+  navigateToPlaylistDetail,
+  useHomeStackNavigation,
+} from "../../navigation"
+
 import MoodCamera from "./MoodCamera"
 import MoodCard from "./MoodCard"
 import PlaylistCard from "./PlaylistCard"
 import { useHomeMood } from "./useHomeMood"
 
-type HomeNavProp = NativeStackNavigationProp<HomeStackParamList, "Home">
-
 export default function HomeScreen(): React.JSX.Element {
-  const navigation = useNavigation<HomeNavProp>()
+  const navigation = useHomeStackNavigation()
   const {
     currentMood,
     spotifyTracks,
@@ -69,7 +68,7 @@ export default function HomeScreen(): React.JSX.Element {
         <Button
           label="View Full Playlist →"
           onPress={(): void =>
-            navigation.navigate("PlaylistDetail", {
+            navigateToPlaylistDetail(navigation, {
               mood: currentMood.label,
               emoji: currentMood.emoji,
               color: currentMood.color,

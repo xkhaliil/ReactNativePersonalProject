@@ -1,9 +1,4 @@
-import {
-  useNavigation,
-  useRoute,
-  type RouteProp,
-} from "@react-navigation/native"
-import { type NativeStackNavigationProp } from "@react-navigation/native-stack"
+import { useRoute, type RouteProp } from "@react-navigation/native"
 import type React from "react"
 import { useMemo } from "react"
 import {
@@ -16,6 +11,8 @@ import {
 } from "react-native"
 
 import { type HomeStackParamList } from "#shared"
+
+import { useHomeStackNavigation } from "../../navigation"
 
 import {
   borderWidths,
@@ -32,14 +29,10 @@ import {
 } from "./playlistTracks"
 
 type PlaylistDetailRouteProp = RouteProp<HomeStackParamList, "PlaylistDetail">
-type PlaylistDetailNavProp = NativeStackNavigationProp<
-  HomeStackParamList,
-  "PlaylistDetail"
->
 
 export default function PlaylistDetailScreen(): React.JSX.Element {
   const route = useRoute<PlaylistDetailRouteProp>()
-  const navigation = useNavigation<PlaylistDetailNavProp>()
+  const navigation = useHomeStackNavigation()
   const {
     mood,
     emoji,

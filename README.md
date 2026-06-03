@@ -77,17 +77,62 @@ eas build --profile preview --platform all
 
 Preview builds also run automatically on push to `main` when `EXPO_TOKEN` is configured in GitHub Secrets.
 
+## Navigation (start here for routing review)
+
+All routing is defined under **`src/navigation/`** — not in feature folders. Read in this order:
+
+1. **`src/navigation/navigationMap.ts`** — tree diagram and every user transition (from → trigger → to)
+2. **`src/navigation/routes.ts`** — `ROUTES` constants (no magic strings in screens)
+3. **`src/navigation/hooks.ts`** — `useRootNavigation`, `useHomeStackNavigation`, `navigateTo*` helpers
+4. **`src/shared/navigationTypes.ts`** — TypeScript params for each screen
+
+```mermaid
+flowchart TD
+  App[App.tsx NavigationContainer]
+  Root[Root Stack]
+  Tabs[Bottom Tabs]
+  HomeStack[Home Stack - nested]
+  Settings[Settings modal]
+
+  App --> Root
+  Root --> Tabs
+  Root --> Settings
+  Tabs --> HomeStack
+  Tabs --> History[History tab]
+  Tabs --> Profile[Profile tab]
+  HomeStack --> Home[Home - Discover]
+  HomeStack --> Detail[PlaylistDetail]
+  Home -->|⚙️ header| Settings
+  Home -->|View Full Playlist| Detail
+  Detail -->|Back| Home
+```
+
+| Level | Navigator | File | Screens |
+| ----- | ----------- | ---- | ------- |
+| 1 — Root | Native Stack | `RootNavigator.tsx` | `Tabs` (initial), `Settings` (modal) |
+| 2 — Tabs | Bottom Tabs | `MainTabNavigator.tsx` | `HomeTab`, `History`, `Profile` |
+| 3 — Nested | Native Stack | `HomeStackNavigator.tsx` | `Home`, `PlaylistDetail` |
+
+**Where navigation is triggered**
+
+| From | Action | API |
+| ---- | ------ | --- |
+| Discover header | ⚙️ | `navigateToSettings(useRootNavigation())` |
+| Discover | View Full Playlist | `navigateToPlaylistDetail(...)` |
+| Playlist Detail | ← Back | `navigation.goBack()` |
+| Tab bar | Switch tab | Built-in tab navigator |
+
 ## Project structure
 
 ```
 src/
   index.ts                 # entry (main in package.json)
   App.tsx                  # NavigationContainer only — minimal shell
-  shared/                  # public API (#shared alias)
+  shared/                  # public API (#shared alias) + navigationTypes
+  navigation/              # ALL navigators, ROUTES, navigationMap, hooks
   design-system/           # tokens, primitives, reusable UI
-  features/                # feature modules (home, history, profile, settings, spotify)
+  features/                # screens only (no navigators)
   hooks/                   # persistence, haptics, camera abstraction
-  navigation/              # Root + tab navigators (routing only)
 ```
 
 Import rules:
@@ -103,7 +148,7 @@ Import rules:
 | ----------- | ----- |
 | Multiple components + hooks | Design system + feature screens; `useState`, `useEffect`, `useCallback`, `useMemo`, etc. |
 | StyleSheet in every component | All `.tsx` UI files including navigators and Typography |
-| Root Stack + Tabs + nested Stack | `RootNavigator` → `MainTabNavigator` → `HomeStackNavigator` |
+| Root Stack + Tabs + nested Stack | `navigation/` — see **Navigation** section above |
 | Feature-based + modlets | `src/features/*/index.ts` barrels |
 | `#shared` alias | `tsconfig.json` paths; Jest `moduleNameMapper` |
 | Primitives separate from components | `design-system/primitives/` |

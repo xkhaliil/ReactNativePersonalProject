@@ -15,24 +15,36 @@ import {
   spacing,
 } from "../design-system"
 import { HistoryScreen } from "../features/history"
-import { HomeStackNavigator } from "../features/home"
 import { ProfileScreen } from "../features/profile"
 
+import HomeStackNavigator from "./HomeStackNavigator"
+import { ROUTES, TAB_LABELS } from "./routes"
+
+/**
+ * MainTabNavigator — bottom tabs (requirement: Tabs or Drawer).
+ *
+ * | Tab route  | Tab label  | Screen / nested navigator      |
+ * |------------|------------|--------------------------------|
+ * | HomeTab    | Discover   | HomeStackNavigator (nested Stack)|
+ * | History    | History    | HistoryScreen                  |
+ * | Profile    | Profile    | ProfileScreen                  |
+ *
+ * @see navigationMap.ts for tab switches.
+ */
 const Tab = createBottomTabNavigator<MainTabParamList>()
 
 type TabIconProps = {
-  label: string
+  routeName: keyof MainTabParamList
   focused: boolean
 }
 
-const TAB_CONFIG: Record<string, { icon: string; title: string }> = {
-  HomeTab: { icon: "◎", title: "Discover" },
-  History: { icon: "≡", title: "History" },
-  Profile: { icon: "○", title: "Profile" },
+const TAB_ICONS: Record<keyof MainTabParamList, string> = {
+  [ROUTES.tabs.homeTab]: "◎",
+  [ROUTES.tabs.history]: "≡",
+  [ROUTES.tabs.profile]: "○",
 }
 
-function TabIcon({ label, focused }: TabIconProps): React.JSX.Element {
-  const config = TAB_CONFIG[label] ?? { icon: "•", title: label }
+function TabIcon({ routeName, focused }: TabIconProps): React.JSX.Element {
   return (
     <View style={[styles.tabItem, focused && styles.tabItemFocused]}>
       <Text
@@ -41,7 +53,7 @@ function TabIcon({ label, focused }: TabIconProps): React.JSX.Element {
           focused ? styles.tabIconFocused : styles.tabIconDefault,
         ]}
       >
-        {config.icon}
+        {TAB_ICONS[routeName]}
       </Text>
     </View>
   )
@@ -57,24 +69,24 @@ export default function MainTabNavigator(): React.JSX.Element {
         tabBarInactiveTintColor: colors.tab.inactive,
         tabBarLabelStyle: styles.tabLabel,
         tabBarIcon: ({ focused }) => (
-          <TabIcon label={route.name} focused={focused} />
+          <TabIcon routeName={route.name} focused={focused} />
         ),
       })}
     >
       <Tab.Screen
-        name="HomeTab"
+        name={ROUTES.tabs.homeTab}
         component={HomeStackNavigator}
-        options={{ title: "Discover" }}
+        options={{ title: TAB_LABELS[ROUTES.tabs.homeTab] }}
       />
       <Tab.Screen
-        name="History"
+        name={ROUTES.tabs.history}
         component={HistoryScreen}
-        options={{ title: "History" }}
+        options={{ title: TAB_LABELS[ROUTES.tabs.history] }}
       />
       <Tab.Screen
-        name="Profile"
+        name={ROUTES.tabs.profile}
         component={ProfileScreen}
-        options={{ title: "Profile" }}
+        options={{ title: TAB_LABELS[ROUTES.tabs.profile] }}
       />
     </Tab.Navigator>
   )

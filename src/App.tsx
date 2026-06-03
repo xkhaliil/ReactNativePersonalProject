@@ -3,7 +3,7 @@ import { StatusBar } from "expo-status-bar"
 import type React from "react"
 import { StyleSheet, View } from "react-native"
 
-import RootNavigator from "./navigation/RootNavigator"
+import { RootNavigator } from "./navigation"
 
 export default function App(): React.JSX.Element {
   return (

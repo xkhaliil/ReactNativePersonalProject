@@ -1,60 +1,56 @@
 /**
- * ─────────────────────────────────────────────────────────────
- * Navigation tree
- * ─────────────────────────────────────────────────────────────
+ * Navigation param lists — TypeScript types for every route.
  *
- * RootStack  (Stack – root of the whole app)
- * ├── Tabs          → MainTabNavigator     (Bottom Tabs)
- * │   ├── HomeTab   → HomeStackNavigator   (nested Stack)
- * │   │   ├── Home             (main discover screen)
- * │   │   └── PlaylistDetail   (detail pushed from Home)
- * │   ├── History              (mood history screen)
- * │   └── Profile              (user profile screen)
- * └── Settings  (modal, reachable from anywhere via ⚙️ button)
+ * ┌─ HOW TO READ ROUTING IN THIS PROJECT ─────────────────────────────┐
+ * │ 1. src/navigation/navigationMap.ts  — diagram + all transitions  │
+ * │ 2. src/navigation/routes.ts         — route name constants       │
+ * │ 3. src/navigation/*.tsx               — navigator definitions      │
+ * │ 4. This file                        — params per screen          │
+ * └──────────────────────────────────────────────────────────────────┘
  *
- * ─────────────────────────────────────────────────────────────
- * Files
- * ─────────────────────────────────────────────────────────────
- * src/navigation/RootNavigator.tsx        — RootStack
- * src/navigation/MainTabNavigator.tsx     — Bottom Tabs (Tabs)
- * src/features/home/HomeStackNavigator.tsx — nested Stack (HomeTab)
- * ─────────────────────────────────────────────────────────────
+ * Tree (3 levels — matches course requirements):
+ *
+ *   RootStack  [Stack — root]
+ *   ├── Tabs          → MainTabNavigator     [Bottom Tabs]
+ *   │   ├── HomeTab   → HomeStackNavigator   [nested Stack — Discover flow]
+ *   │   │   ├── Home
+ *   │   │   └── PlaylistDetail
+ *   │   ├── History
+ *   │   └── Profile
+ *   └── Settings  [modal — from Discover ⚙️ only]
  */
 
-/** Root-level stack. Holds the tab navigator + the Settings modal. */
+/** Root stack: tab shell + global Settings modal. */
 export type RootStackParamList = {
-  /** The main app experience — hosts all bottom tabs. */
+  /** Hosts bottom tabs (Discover, History, Profile). Initial route. */
   Tabs: undefined
-  /** Settings modal — pushed from any screen via the ⚙️ header button. */
+  /** App-wide settings — presented as a modal over the current tab. */
   Settings: undefined
 }
 
-/** Bottom tab bar. Each tab maps to a screen or a nested stack. */
+/** Bottom tab routes. HomeTab wraps the nested Discover stack. */
 export type MainTabParamList = {
-  /** "Discover" tab — hosts HomeStackNavigator (Home + PlaylistDetail). */
+  /** Discover tab → HomeStackNavigator. */
   HomeTab: undefined
-  /** "History" tab — flat screen showing past mood scans. */
+  /** Mood scan history. */
   History: undefined
-  /** "Profile" tab — flat screen for user settings/profile. */
+  /** Profile and preference toggles. */
   Profile: undefined
 }
 
 /** Nested stack inside the Discover tab. */
 export type HomeStackParamList = {
-  /** Landing screen — scan mood, see generated playlist cards. */
+  /** Camera scan, mood card, playlist preview. */
   Home: undefined
-  /** Detail screen — pushed when a playlist card is tapped. */
+  /** Full playlist — pushed from Home with mood + track params. */
   PlaylistDetail: {
     mood: string
     emoji: string
     color: string
     playlistTitle: string
     genre: string
-    /** Real Spotify track strings ("Name – Artist"). Falls back to static list when absent. */
     tracks?: string[]
-    /** Spotify external URLs for each track, aligned by index with `tracks`. */
     trackUrls?: string[]
-    /** Spotify URL for the matched playlist — opens directly in the Spotify app. */
     playlistUrl?: string
   }
 }
