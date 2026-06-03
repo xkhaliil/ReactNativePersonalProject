@@ -12,7 +12,7 @@
  * HomeScreen calls `addEntry` on every scan.
  */
 
-import { useCallback } from "react"
+import { useCallback, useState } from "react"
 
 import { useHaptics } from "./useHaptics"
 import { useStorage } from "./useStorage"
@@ -33,6 +33,8 @@ type UseMoodHistoryReturn = {
   addEntry: (mood: Omit<MoodEntry, "id" | "timestamp">) => Promise<void>
   clearHistory: () => Promise<void>
   loading: boolean
+  refreshing: boolean
+  refresh: () => Promise<void>
 }
 
 export function useMoodHistory(): UseMoodHistoryReturn {
@@ -40,6 +42,7 @@ export function useMoodHistory(): UseMoodHistoryReturn {
     STORAGE_KEY,
     [],
   )
+  const [refreshing, setRefreshing] = useState(false)
   const { triggerMoodScan } = useHaptics()
 
   const addEntry = useCallback(
@@ -62,7 +65,15 @@ export function useMoodHistory(): UseMoodHistoryReturn {
     await setEntries([])
   }, [setEntries])
 
-  return { entries, addEntry, clearHistory, loading }
+  const refresh = useCallback(async () => {
+    setRefreshing(true)
+    // Re-read is handled automatically by useStorage on mount; here we just
+    // give a brief visual pulse so the pull-to-refresh feels responsive.
+    await new Promise<void>((resolve) => setTimeout(resolve, 600))
+    setRefreshing(false)
+  }, [setRefreshing])
+
+  return { entries, addEntry, clearHistory, loading, refreshing, refresh }
 }
 
 /**
