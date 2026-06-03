@@ -1,5 +1,5 @@
-import React from "react"
 import { render, fireEvent } from "@testing-library/react-native"
+
 import { SettingsRow } from "../SettingsRow"
 
 // ─── Smoke Test ──────────────────────────────────────────────────────────────
@@ -11,7 +11,7 @@ describe("SettingsRow – smoke", () => {
         title="Dark Mode"
         description="Use a dark color theme"
         value={false}
-        onValueChange={() => {}}
+        onValueChange={jest.fn()}
       />,
     )
     expect(toJSON()).not.toBeNull()
@@ -27,7 +27,7 @@ describe("SettingsRow – unit", () => {
         title="Notifications"
         description="Enable push notifications"
         value={true}
-        onValueChange={() => {}}
+        onValueChange={jest.fn()}
       />,
     )
     expect(getByText("Notifications")).toBeTruthy()
@@ -58,19 +58,21 @@ describe("SettingsRow – unit", () => {
         title="Sound"
         description="Play sounds"
         value={false}
-        onValueChange={() => {}}
+        onValueChange={jest.fn()}
       />,
     )
-    expect(getByRole("switch").props.value).toBe(false)
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    expect((getByRole("switch").props as { value: boolean }).value).toBe(false)
 
     rerender(
       <SettingsRow
         title="Sound"
         description="Play sounds"
         value={true}
-        onValueChange={() => {}}
+        onValueChange={jest.fn()}
       />,
     )
-    expect(getByRole("switch").props.value).toBe(true)
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    expect((getByRole("switch").props as { value: boolean }).value).toBe(true)
   })
 })

@@ -1,12 +1,12 @@
-import React from "react"
 import { render, fireEvent } from "@testing-library/react-native"
+
 import { Button } from "../Button"
 
 // ─── Smoke Test ──────────────────────────────────────────────────────────────
 
 describe("Button – smoke", () => {
   it("renders without crashing", () => {
-    const { toJSON } = render(<Button label="Hello" onPress={() => {}} />)
+    const { toJSON } = render(<Button label="Hello" onPress={jest.fn()} />)
     expect(toJSON()).not.toBeNull()
   })
 })
@@ -15,20 +15,20 @@ describe("Button – smoke", () => {
 
 describe("Button – unit", () => {
   it("displays the provided label", () => {
-    const { getByText } = render(<Button label="Save" onPress={() => {}} />)
+    const { getByText } = render(<Button label="Save" onPress={jest.fn()} />)
     expect(getByText("Save")).toBeTruthy()
   })
 
   it("renders all three variants without crashing", () => {
     const { rerender, toJSON } = render(
-      <Button label="Primary" onPress={() => {}} variant="primary" />,
+      <Button label="Primary" onPress={jest.fn()} variant="primary" />,
     )
     expect(toJSON()).not.toBeNull()
 
-    rerender(<Button label="Outline" onPress={() => {}} variant="outline" />)
+    rerender(<Button label="Outline" onPress={jest.fn()} variant="outline" />)
     expect(toJSON()).not.toBeNull()
 
-    rerender(<Button label="Ghost" onPress={() => {}} variant="ghost" />)
+    rerender(<Button label="Ghost" onPress={jest.fn()} variant="ghost" />)
     expect(toJSON()).not.toBeNull()
   })
 

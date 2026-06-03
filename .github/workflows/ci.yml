@@ -1,0 +1,73 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ─── Lint & Test ─────────────────────────────────────────────────────────────
+  lint-and-test:
+    name: Lint & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npm run lint-typecheck
+
+      - name: ESLint
+        run: npm run lint-eslint
+
+      - name: Prettier
+        run: npm run lint-prettier
+
+      - name: Knip
+        run: npm run lint-knip
+
+      - name: Tests
+        run: npm test -- --no-coverage
+
+  # ─── EAS Build ───────────────────────────────────────────────────────────────
+  # Triggered only on pushes to main (not on pull requests).
+  # Requires EXPO_TOKEN to be added as a repository secret.
+  # Run `eas init` locally first to link the project to your Expo account.
+  eas-build:
+    name: EAS Build (preview)
+    runs-on: ubuntu-latest
+    needs: lint-and-test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Build (preview)
+        run: eas build --profile preview --platform all --non-interactive
