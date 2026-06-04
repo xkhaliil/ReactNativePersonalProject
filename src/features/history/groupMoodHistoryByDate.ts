@@ -1,4 +1,4 @@
-import { type MoodEntry } from "../../hooks"
+﻿import { type MoodEntry } from "#features/history"
 
 export type MoodHistorySection = {
   title: string
@@ -35,3 +35,4 @@ export function groupMoodHistoryByDate(
 
   return Object.entries(buckets).map(([title, data]) => ({ title, data }))
 }
+

@@ -2,13 +2,13 @@
  * useSettings
  *
  * Persists user preferences across app launches.
- * All boolean toggle state lives here — read/written through this hook
+ * All boolean toggle state lives here and is read/written through this hook
  * so switches survive app restarts.
  */
 
 import { useCallback } from "react"
 
-import { useStorage } from "./useStorage"
+import { useStorage } from "#shared"
 
 const STORAGE_KEY = "app-settings-v1"
 
@@ -56,3 +56,4 @@ export function useSettings(): UseSettingsReturn {
 
   return { settings, setSetting, loading }
 }
+

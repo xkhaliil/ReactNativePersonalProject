@@ -2,7 +2,7 @@
  * useSpotifyAuth
  *
  * Manages the Spotify OAuth 2.0 Authorization Code + PKCE flow using
- * expo-auth-session. No client secret is required — PKCE is safe for
+ * expo-auth-session. No client secret is required, and PKCE is safe for
  * mobile apps.
  *
  * Setup required (once, before using):
@@ -20,12 +20,12 @@ import { makeRedirectUri, useAuthRequest } from "expo-auth-session"
 import * as WebBrowser from "expo-web-browser"
 import { useCallback, useEffect, useState } from "react"
 
-import { useStorage } from "../../hooks"
+import { useStorage } from "#shared"
 
 // Required so expo-auth-session can close the browser tab on redirect
 WebBrowser.maybeCompleteAuthSession()
 
-// ─── Constants ────────────────────────────────────────────────────────────────
+// Constants
 
 const CLIENT_ID = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID ?? ""
 
@@ -36,7 +36,7 @@ const DISCOVERY = {
 
 /**
  * Scopes requested from Spotify.
- * Keep this minimal — only request what the app actually uses.
+ * Keep this minimal - only request what the app actually uses.
  */
 const SCOPES = [
   "user-read-email",
@@ -47,7 +47,7 @@ const SCOPES = [
 
 const STORAGE_KEY = "spotify-auth-v1"
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// Types
 
 type StoredTokens = {
   accessToken: string
@@ -66,7 +66,7 @@ type UseSpotifyAuthReturn = {
   disconnect: () => Promise<void>
 }
 
-// ─── Hook ─────────────────────────────────────────────────────────────────────
+// Hook
 
 export function useSpotifyAuth(): UseSpotifyAuthReturn {
   const redirectUri = makeRedirectUri({
@@ -89,7 +89,7 @@ export function useSpotifyAuth(): UseSpotifyAuthReturn {
     DISCOVERY,
   )
 
-  // Exchange auth code → access token when Spotify redirects back
+  // Exchange auth code -> access token when Spotify redirects back
   useEffect(() => {
     if (response?.type !== "success") return
     const { code } = response.params
@@ -149,3 +149,4 @@ export function useSpotifyAuth(): UseSpotifyAuthReturn {
     disconnect,
   }
 }
+

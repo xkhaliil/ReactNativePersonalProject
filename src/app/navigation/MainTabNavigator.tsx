@@ -3,8 +3,9 @@ import type React from "react"
 
 import { StyleSheet, Text, View } from "react-native"
 
-import { type MainTabParamList } from "#shared"
 
+import { HistoryScreen } from "#features/history"
+import { ProfileScreen } from "#features/profile"
 import {
   borderWidths,
   colors,
@@ -13,15 +14,14 @@ import {
   radii,
   sizes,
   spacing,
-} from "../design-system"
-import { HistoryScreen } from "../features/history"
-import { ProfileScreen } from "../features/profile"
+} from "#shared/ui"
 
 import HomeStackNavigator from "./HomeStackNavigator"
 import { ROUTES, TAB_LABELS } from "./routes"
+import { type MainTabParamList } from "./types"
 
 /**
- * MainTabNavigator — bottom tabs (requirement: Tabs or Drawer).
+ * MainTabNavigator - bottom tabs navigator.
  *
  * | Tab route  | Tab label  | Screen / nested navigator      |
  * |------------|------------|--------------------------------|
@@ -39,9 +39,9 @@ type TabIconProps = {
 }
 
 const TAB_ICONS: Record<keyof MainTabParamList, string> = {
-  [ROUTES.tabs.homeTab]: "◎",
-  [ROUTES.tabs.history]: "≡",
-  [ROUTES.tabs.profile]: "○",
+  [ROUTES.tabs.homeTab]: "D",
+  [ROUTES.tabs.history]: "H",
+  [ROUTES.tabs.profile]: "P",
 }
 
 function TabIcon({ routeName, focused }: TabIconProps): React.JSX.Element {
@@ -131,3 +131,4 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
 })
+

@@ -15,9 +15,12 @@ import {
   fontWeights,
   radii,
   spacing,
-} from "../../design-system"
-import { MoodCameraPreview, useMoodCamera } from "../../hooks"
+} from "#shared/ui"
+
 import { detectMoodFromPhoto } from "../spotify"
+
+import { useMoodCamera } from "./model/useMoodCamera"
+import { MoodCameraPreview } from "./ui/MoodCameraPreview"
 
 type MoodCameraProps = {
   onMoodDetected: (mood: string) => void
@@ -50,7 +53,7 @@ export default function MoodCamera({
     return (
       <View style={styles.section}>
         <View style={[styles.viewfinder, styles.permissionBox]}>
-          <Text style={styles.permissionIcon}>📷</Text>
+          <Text style={styles.permissionIcon}>CAM</Text>
           <Text style={styles.permissionTitle}>Camera Access Needed</Text>
           <Text style={styles.permissionDesc}>
             Allow camera access to scan your mood
@@ -80,7 +83,7 @@ export default function MoodCamera({
           {isScanning && (
             <View style={styles.scanOverlay}>
               <ActivityIndicator size="large" color={colors.accent.default} />
-              <Text style={styles.scanLabel}>Analyzing your mood…</Text>
+              <Text style={styles.scanLabel}>Analyzing your mood...</Text>
             </View>
           )}
         </View>
@@ -105,10 +108,10 @@ export default function MoodCamera({
         {isScanning ? (
           <ActivityIndicator size="small" color={colors.accent.on} />
         ) : (
-          <Text style={styles.scanBtnIcon}>✨</Text>
+          <Text style={styles.scanBtnIcon}>*</Text>
         )}
         <Text style={styles.scanBtnText}>
-          {isScanning ? "Scanning…" : "Scan My Mood"}
+          {isScanning ? "Scanning..." : "Scan My Mood"}
         </Text>
       </Pressable>
     </View>
@@ -263,3 +266,4 @@ const styles = StyleSheet.create({
     fontSize: fontSizes.base,
   },
 })
+

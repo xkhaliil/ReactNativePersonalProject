@@ -1,6 +1,7 @@
 import type React from "react"
 import { ScrollView, StyleSheet, Text, View } from "react-native"
 
+import { useProfile } from "#features/profile"
 import {
   FormField,
   SettingsRow,
@@ -11,8 +12,7 @@ import {
   fontWeights,
   radii,
   spacing,
-} from "../../design-system"
-import { useProfile } from "../../hooks"
+} from "#shared/ui"
 
 export default function ProfileScreen(): React.JSX.Element {
   const {
@@ -59,7 +59,7 @@ export default function ProfileScreen(): React.JSX.Element {
           />
           <FormField
             label="Bio"
-            placeholder="e.g. Music lover, coffee addict ☕"
+            placeholder="e.g. Music lover, coffee addict"
             value={draft.bio}
             onChangeText={(v) => setField("bio", v)}
             error={errors.bio}
@@ -71,7 +71,7 @@ export default function ProfileScreen(): React.JSX.Element {
           />
           <FormField
             label="Favourite Genre"
-            placeholder="e.g. Lo-Fi, Jazz, Metal…"
+            placeholder="e.g. Lo-Fi, Jazz, Metal..."
             value={draft.favouriteGenre}
             onChangeText={(v) => setField("favouriteGenre", v)}
             error={errors.favouriteGenre}
@@ -83,7 +83,7 @@ export default function ProfileScreen(): React.JSX.Element {
           {isDirty && (
             <View style={styles.saveRow}>
               <Button
-                label={saving ? "Saving…" : "Save Profile"}
+                label={saving ? "Saving..." : "Save Profile"}
                 onPress={save}
                 variant="primary"
                 disabled={!isValid || saving}
@@ -168,3 +168,4 @@ const styles = StyleSheet.create({
     marginTop: spacing.xs,
   },
 })
+

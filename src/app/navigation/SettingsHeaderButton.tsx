@@ -7,13 +7,13 @@ import {
   fontSizes,
   radii,
   spacing,
-} from "../design-system"
+} from "#shared/ui"
 
 import { navigateToSettings, useRootNavigation } from "./hooks"
 
 /**
  * Opens the root Settings modal from the Discover stack header.
- * Lives in navigation/ because it crosses navigator boundaries (Home Stack → Root Stack).
+ * Lives in navigation/ because it crosses navigator boundaries (Home Stack -> Root Stack).
  */
 export function SettingsHeaderButton(): React.JSX.Element {
   const navigation = useRootNavigation()
@@ -29,7 +29,7 @@ export function SettingsHeaderButton(): React.JSX.Element {
       accessibilityLabel="Open settings"
       accessibilityRole="button"
     >
-      <Text style={styles.settingsIcon}>⚙</Text>
+      <Text style={styles.settingsIcon}>S</Text>
     </Pressable>
   )
 }
@@ -55,3 +55,4 @@ const styles = StyleSheet.create({
     color: colors.text.secondary,
   },
 })
+

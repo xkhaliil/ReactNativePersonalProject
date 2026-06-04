@@ -1,8 +1,8 @@
 /**
- * Navigation map — how users move between screens.
+ * Navigation map - how users move between screens.
  *
  * Read this file first when reviewing routing. Navigator components
- * live in src/navigation/; param types live in #shared/navigationTypes.
+ * live in `src/app/navigation`; route param types live in `types.ts`.
  */
 
 import { ROUTES } from "./routes"
@@ -16,13 +16,13 @@ export type NavigationTransition = {
   to: string
   /** Navigator that handles the transition. */
   navigator: "Root Stack" | "Bottom Tabs" | "Home Stack"
-  /** Route name(s) used in code — see ROUTES in routes.ts. */
+  /** Route name(s) used in code - see ROUTES in routes.ts. */
   route: string
 }
 
 /**
  * Every intentional navigation in the app.
- * There is no file-based routing; all paths are declared in src/navigation/.
+ * There is no file-based routing; all paths are declared in `src/app/navigation`.
  */
 /** Documented transitions for code review — see README Navigation section. */
 export const NAVIGATION_TRANSITIONS: NavigationTransition[] = [

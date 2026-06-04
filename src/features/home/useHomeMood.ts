@@ -8,8 +8,10 @@
 
 import { useCallback, useState } from "react"
 
-import { palette } from "../../design-system"
-import { useMoodHistory, useProfile } from "../../hooks"
+import { useMoodHistory } from "#features/history"
+import { useProfile } from "#features/profile"
+import { palette } from "#shared/ui"
+
 import {
   fetchMoodPlaylist,
   fetchRecommendations,
@@ -30,34 +32,34 @@ export type HomeMood = {
 
 const MOODS: HomeMood[] = [
   {
-    emoji: "😊",
+    emoji: ":)",
     label: "Happy",
     color: palette.yellow500,
     playlist: { title: "Sunshine Hits", genre: "Pop / Indie Pop" },
   },
   {
-    emoji: "😢",
+    emoji: ":(",
     label: "Sad",
     color: palette.blue500,
     playlist: { title: "Rainy Day Blues", genre: "Sad Indie / Lo-Fi" },
   },
   {
-    emoji: "😤",
+    emoji: ">:(",
     label: "Angry",
     color: palette.orange500,
-    playlist: { title: "Rage Mode 💢", genre: "Metal / Hard Rock" },
+    playlist: { title: "Rage Mode", genre: "Metal / Hard Rock" },
   },
   {
-    emoji: "😎",
+    emoji: "B)",
     label: "Chill",
     color: palette.cyan500,
     playlist: { title: "Sunday Vibes", genre: "Chillwave / Lo-Fi" },
   },
   {
-    emoji: "🔥",
+    emoji: "!!",
     label: "Hype",
     color: palette.pink500,
-    playlist: { title: "LET'S GO 🔥", genre: "EDM / Hip-Hop" },
+    playlist: { title: "LET'S GO", genre: "EDM / Hip-Hop" },
   },
 ]
 
@@ -122,3 +124,4 @@ export function useHomeMood(): UseHomeMoodReturn {
     handleMoodDetected,
   }
 }
+

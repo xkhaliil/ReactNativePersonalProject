@@ -1,9 +1,9 @@
-import { NavigationContainer } from "@react-navigation/native"
+﻿import { NavigationContainer } from "@react-navigation/native"
 import { StatusBar } from "expo-status-bar"
 import type React from "react"
 import { StyleSheet, View } from "react-native"
 
-import { RootNavigator } from "./navigation"
+import { RootNavigator } from "#app/navigation"
 
 export default function App(): React.JSX.Element {
   return (
@@ -21,3 +21,4 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 })
+

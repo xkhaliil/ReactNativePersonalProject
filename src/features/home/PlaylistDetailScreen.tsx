@@ -10,8 +10,9 @@ import {
   View,
 } from "react-native"
 
-import { type HomeStackParamList } from "#shared"
+import { type HomeStackParamList } from "#app/navigation"
 
+import { useHomeStackNavigation } from "#app/navigation"
 import {
   borderWidths,
   colors,
@@ -19,8 +20,7 @@ import {
   fontWeights,
   radii,
   spacing,
-} from "../../design-system"
-import { useHomeStackNavigation } from "../../navigation"
+} from "#shared/ui"
 
 import { buildPlaylistTrackRows, type PlaylistTrackRow } from "./playlistTracks"
 
@@ -78,9 +78,9 @@ export default function PlaylistDetailScreen(): React.JSX.Element {
           )}
         </View>
         {item.spotifyUrl !== undefined ? (
-          <Text style={[styles.spotifyIcon, { color }]}>▶</Text>
+          <Text style={[styles.spotifyIcon, { color }]}>{">"}</Text>
         ) : (
-          <Text style={styles.trackChevron}>›</Text>
+          <Text style={styles.trackChevron}>{">"}</Text>
         )}
       </View>
     )
@@ -133,7 +133,7 @@ export default function PlaylistDetailScreen(): React.JSX.Element {
                 ]}
                 onPress={() => openInSpotify(playlistUrl)}
               >
-                <Text style={styles.openPlaylistIcon}>▶</Text>
+                <Text style={styles.openPlaylistIcon}>{">"}</Text>
                 <Text style={[styles.openPlaylistText, { color }]}>
                   Open Playlist in Spotify
                 </Text>
@@ -154,7 +154,7 @@ export default function PlaylistDetailScreen(): React.JSX.Element {
           ]}
           onPress={() => navigation.goBack()}
         >
-          <Text style={[styles.backBtnText, { color }]}>← Back</Text>
+          <Text style={[styles.backBtnText, { color }]}>{"<- Back"}</Text>
         </Pressable>
       }
     />
@@ -305,3 +305,4 @@ const styles = StyleSheet.create({
     letterSpacing: 0.3,
   },
 })
+

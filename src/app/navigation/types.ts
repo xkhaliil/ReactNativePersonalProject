@@ -2,9 +2,9 @@
  * Navigation param lists — TypeScript types for every route.
  *
  * ┌─ HOW TO READ ROUTING IN THIS PROJECT ─────────────────────────────┐
- * │ 1. src/navigation/navigationMap.ts  — diagram + all transitions  │
- * │ 2. src/navigation/routes.ts         — route name constants       │
- * │ 3. src/navigation/*.tsx               — navigator definitions      │
+ * │ 1. src/app/navigation/navigationMap.ts  - diagram + all transitions │
+ * │ 2. src/app/navigation/routes.ts         - route name constants      │
+ * │ 3. src/app/navigation/*.tsx             - navigator definitions     │
  * │ 4. This file                        — params per screen          │
  * └──────────────────────────────────────────────────────────────────┘
  *

@@ -2,21 +2,21 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import type React from "react"
 import { StyleSheet } from "react-native"
 
-import { type RootStackParamList } from "#shared"
 
-import { colors, fontWeights } from "../design-system"
-import { SettingsScreen } from "../features/settings"
+import { SettingsScreen } from "#features/settings"
+import { colors, fontWeights } from "#shared/ui"
 
 import MainTabNavigator from "./MainTabNavigator"
 import { ROUTES } from "./routes"
+import { type RootStackParamList } from "./types"
 
 /**
- * RootNavigator — root Stack (requirement: Stack as root routing).
+ * RootNavigator - root stack navigator.
  *
  * | Route     | Component          | Notes                          |
  * |-----------|--------------------|--------------------------------|
  * | Tabs      | MainTabNavigator   | Initial screen, no root header |
- * | Settings  | SettingsScreen     | Modal, opened from Discover ⚙️ |
+ * | Settings  | SettingsScreen     | Modal, opened from Discover       |
  *
  * @see navigationMap.ts for all transitions involving this navigator.
  */
@@ -59,3 +59,4 @@ const screenOptions = {
   headerShadowVisible: false,
   contentStyle: styles.content,
 }
+

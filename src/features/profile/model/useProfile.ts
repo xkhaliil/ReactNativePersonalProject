@@ -2,13 +2,13 @@
  * useProfile
  *
  * All logic for the user profile: loading, editing, validation,
- * saving, and resetting. ProfileScreen is purely declarative —
+ * saving, and resetting. ProfileScreen is purely declarative -
  * it renders what this hook returns and calls nothing else.
  *
  * Persisted fields:
- *   - displayName  (TextInput) — shown as greeting on History screen
+ *   - displayName  (TextInput) - shown as greeting on History screen
  *   - bio          (TextInput, multiline)
- *   - favouriteGenre (TextInput) — shown on HomeScreen playlist label
+ *   - favouriteGenre (TextInput) - shown on HomeScreen playlist label
  *
  * Preference switches (persisted separately via useSettings):
  *   - hapticsEnabled
@@ -18,15 +18,15 @@
 
 import { useCallback, useEffect, useState } from "react"
 
-import { useSettings } from "./useSettings"
-import { useStorage } from "./useStorage"
+import { useSettings } from "#features/settings"
+import { useStorage } from "#shared"
 
 const STORAGE_KEY = "user-profile-v1"
 
 const MAX_BIO_LENGTH = 120
 const MAX_GENRE_LENGTH = 40
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// Types
 
 export type ProfileData = {
   displayName: string
@@ -48,7 +48,7 @@ const DEFAULT_PROFILE: ProfileData = {
   favouriteGenre: "",
 }
 
-// ─── Validation ───────────────────────────────────────────────────────────────
+// Validation
 
 function validateProfile(draft: EditableProfile): ProfileErrors {
   const errors: ProfileErrors = {}
@@ -74,12 +74,12 @@ function hasErrors(errors: ProfileErrors): boolean {
   return Object.keys(errors).length > 0
 }
 
-// ─── Hook ─────────────────────────────────────────────────────────────────────
+// Hook
 
 export type UseProfileReturn = {
-  // Saved (committed) profile — what the rest of the app uses
+  // Saved (committed) profile - what the rest of the app uses
   profile: ProfileData
-  // Draft — what's currently in the form fields (may be unsaved)
+  // Draft - what's currently in the form fields (may be unsaved)
   draft: EditableProfile
   // Inline validation errors for the current draft
   errors: ProfileErrors
@@ -178,3 +178,4 @@ export function useProfile(): UseProfileReturn {
     setShowGenreHints: (v) => void setSetting("showGenreHints", v),
   }
 }
+

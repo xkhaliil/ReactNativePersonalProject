@@ -9,6 +9,8 @@ import {
   View,
 } from "react-native"
 
+import { formatEntryTime, useMoodHistory } from "#features/history"
+import { useProfile } from "#features/profile"
 import {
   borderWidths,
   colors,
@@ -17,8 +19,7 @@ import {
   radii,
   spacing,
   typography,
-} from "../../design-system"
-import { useMoodHistory, formatEntryTime, useProfile } from "../../hooks"
+} from "#shared/ui"
 
 import { groupMoodHistoryByDate } from "./groupMoodHistoryByDate"
 
@@ -75,7 +76,7 @@ export default function HistoryScreen(): React.JSX.Element {
       ListEmptyComponent={
         !loading ? (
           <View style={styles.emptyCard}>
-            <Text style={styles.emptyEmoji}>🎭</Text>
+            <Text style={styles.emptyEmoji}>[]</Text>
             <Text style={styles.emptyTitle}>No scans yet</Text>
             <Text style={styles.emptyDesc}>
               Head to Discover and scan your first mood
@@ -252,3 +253,4 @@ const styles = StyleSheet.create({
     letterSpacing: 0.3,
   },
 })
+

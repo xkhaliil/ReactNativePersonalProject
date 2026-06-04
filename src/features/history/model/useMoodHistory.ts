@@ -2,7 +2,7 @@
  * useMoodHistory
  *
  * Persists the list of mood scans across app launches.
- * Every time the user scans, call `addEntry` — the entry is saved
+ * Every time the user scans, call `addEntry` and the entry is saved
  * immediately and survives app restarts.
  *
  * Haptic feedback is fired here via useHaptics, so neither HomeScreen
@@ -14,8 +14,7 @@
 
 import { useCallback, useState } from "react"
 
-import { useHaptics } from "./useHaptics"
-import { useStorage } from "./useStorage"
+import { useHaptics , useStorage } from "#shared"
 
 const STORAGE_KEY = "mood-history-v1"
 const MAX_ENTRIES = 50
@@ -110,3 +109,4 @@ export function formatEntryTime(timestamp: number): string {
     day: "numeric",
   })
 }
+

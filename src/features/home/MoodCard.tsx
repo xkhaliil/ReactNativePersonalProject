@@ -1,4 +1,4 @@
-import type React from "react"
+﻿import type React from "react"
 import { StyleSheet, Text, View } from "react-native"
 
 import {
@@ -8,7 +8,7 @@ import {
   fontWeights,
   radii,
   spacing,
-} from "../../design-system"
+} from "#shared/ui"
 
 type MoodCardProps = {
   emoji: string
@@ -104,3 +104,4 @@ const styles = StyleSheet.create({
     opacity: 0.9,
   },
 })
+

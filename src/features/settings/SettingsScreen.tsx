@@ -1,6 +1,7 @@
 import type React from "react"
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native"
 
+import { useSettings } from "#features/settings"
 import {
   SettingsRow,
   borderWidths,
@@ -9,8 +10,8 @@ import {
   fontWeights,
   radii,
   spacing,
-} from "../../design-system"
-import { useSettings } from "../../hooks"
+} from "#shared/ui"
+
 import { useSpotifyAuth } from "../spotify"
 
 export default function SettingsScreen(): React.JSX.Element {
@@ -31,7 +32,7 @@ export default function SettingsScreen(): React.JSX.Element {
         <View style={styles.groupCard}>
           <View style={styles.spotifyRow}>
             <View style={styles.spotifyIconBox}>
-              <Text style={styles.spotifyIcon}>🎵</Text>
+              <Text style={styles.spotifyIcon}>S</Text>
             </View>
             <View style={styles.spotifyInfo}>
               <Text style={styles.spotifyStatus}>
@@ -61,7 +62,7 @@ export default function SettingsScreen(): React.JSX.Element {
                   isConnected && styles.spotifyBtnTextDisconnect,
                 ]}
               >
-                {isLoading ? "…" : isConnected ? "Disconnect" : "Connect"}
+                {isLoading ? "..." : isConnected ? "Disconnect" : "Connect"}
               </Text>
             </Pressable>
           </View>
@@ -222,3 +223,4 @@ const styles = StyleSheet.create({
     marginTop: spacing.lg,
   },
 })
+

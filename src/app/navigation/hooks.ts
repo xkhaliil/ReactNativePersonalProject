@@ -1,13 +1,13 @@
 /**
- * Typed navigation hooks — screens call these instead of wiring useNavigation generics.
+ * Typed navigation hooks. Screens call these instead of wiring generics inline.
  */
 
 import { useNavigation } from "@react-navigation/native"
 import { type NativeStackNavigationProp } from "@react-navigation/native-stack"
 
-import { type HomeStackParamList, type RootStackParamList } from "#shared"
-
 import { ROUTES } from "./routes"
+import { type HomeStackParamList, type RootStackParamList } from "./types"
+
 
 export type RootNavigation = NativeStackNavigationProp<RootStackParamList>
 export type HomeStackNavigation = NativeStackNavigationProp<HomeStackParamList>
@@ -32,3 +32,4 @@ export function navigateToPlaylistDetail(
 ): void {
   navigation.navigate(ROUTES.homeStack.playlistDetail, params)
 }
+

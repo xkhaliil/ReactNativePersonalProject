@@ -23,3 +23,8 @@ export {
   navigateToPlaylistDetail,
 } from "./hooks"
 export type { RootNavigation, HomeStackNavigation } from "./hooks"
+export type {
+  HomeStackParamList,
+  MainTabParamList,
+  RootStackParamList,
+} from "./types"

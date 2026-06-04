@@ -8,7 +8,7 @@ import {
   fontWeights,
   radii,
   spacing,
-} from "../../design-system"
+} from "#shared/ui"
 
 type PlaylistCardProps = {
   title: string
@@ -29,7 +29,7 @@ export default function PlaylistCard({
     <View style={styles.card}>
       {/* Album art placeholder */}
       <View style={[styles.artBox, { backgroundColor: `${accentColor}28` }]}>
-        <Text style={styles.artIcon}>🎵</Text>
+        <Text style={styles.artIcon}>M</Text>
         <View style={[styles.artAccentBar, { backgroundColor: accentColor }]} />
       </View>
 
@@ -48,14 +48,14 @@ export default function PlaylistCard({
             ]}
           >
             <Text style={[styles.spotifyBadgeText, { color: accentColor }]}>
-              ▶ Open in Spotify
+              {"> Open in Spotify"}
             </Text>
           </Pressable>
         )}
       </View>
 
       {/* Chevron */}
-      <Text style={[styles.chevron, { color: accentColor }]}>›</Text>
+      <Text style={[styles.chevron, { color: accentColor }]}>{">"}</Text>
     </View>
   )
 }

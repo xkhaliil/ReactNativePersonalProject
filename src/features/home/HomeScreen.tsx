@@ -3,6 +3,10 @@ import type React from "react"
 import { StyleSheet, Text, View } from "react-native"
 
 import {
+  navigateToPlaylistDetail,
+  useHomeStackNavigation,
+} from "#app/navigation"
+import {
   BodySecondary,
   Button,
   colors,
@@ -10,12 +14,8 @@ import {
   fontWeights,
   radii,
   spacing,
-} from "../../design-system"
+} from "#shared/ui"
 
-import {
-  navigateToPlaylistDetail,
-  useHomeStackNavigation,
-} from "../../navigation"
 
 import MoodCamera from "./MoodCamera"
 import MoodCard from "./MoodCard"
@@ -66,7 +66,7 @@ export default function HomeScreen(): React.JSX.Element {
         />
 
         <Button
-          label="View Full Playlist →"
+          label="View Full Playlist ->"
           onPress={(): void =>
             navigateToPlaylistDetail(navigation, {
               mood: currentMood.label,
@@ -77,7 +77,7 @@ export default function HomeScreen(): React.JSX.Element {
               tracks:
                 spotifyTracks.length > 0
                   ? spotifyTracks.map(
-                      (t) => `${t.name} – ${t.artists[0]?.name ?? ""}`,
+                      (t) => `${t.name} - ${t.artists[0]?.name ?? ""}`,
                     )
                   : undefined,
               trackUrls:
@@ -136,3 +136,4 @@ const styles = StyleSheet.create({
     letterSpacing: 1.2,
   },
 })
+
