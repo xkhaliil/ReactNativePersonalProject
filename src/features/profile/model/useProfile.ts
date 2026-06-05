@@ -178,4 +178,3 @@ export function useProfile(): UseProfileReturn {
     setShowGenreHints: (v) => void setSetting("showGenreHints", v),
   }
 }
-

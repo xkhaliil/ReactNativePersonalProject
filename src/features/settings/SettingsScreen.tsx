@@ -63,11 +63,14 @@ const DEFAULT_NOTIFICATION_STATE: NotificationState = {
 
 export default function SettingsScreen(): React.JSX.Element {
   const { settings, setSetting, loading } = useSettings()
-  const [notificationState, setNotificationState, { loading: notificationsLoading }] =
-    useStorage<NotificationState>(
-      NOTIFICATION_STORAGE_KEY,
-      DEFAULT_NOTIFICATION_STATE,
-    )
+  const [
+    notificationState,
+    setNotificationState,
+    { loading: notificationsLoading },
+  ] = useStorage<NotificationState>(
+    NOTIFICATION_STORAGE_KEY,
+    DEFAULT_NOTIFICATION_STATE,
+  )
   const { isConnected, isLoading, connect, disconnect } = useSpotifyAuth()
   const { preference, setPreference, scheme } = useAppTheme()
   const isScreenLoading = loading || notificationsLoading

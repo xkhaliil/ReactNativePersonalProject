@@ -54,4 +54,3 @@ export function SettingsHeaderButton(): React.JSX.Element {
     </Pressable>
   )
 }
-

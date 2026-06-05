@@ -205,11 +205,7 @@ export default function HistoryScreen(): React.JSX.Element {
 
         <Skeleton>
           <SkeletonItem marginTop={16}>
-            <SkeletonItem
-              width="100%"
-              height={72}
-              borderRadius={16}
-            />
+            <SkeletonItem width="100%" height={72} borderRadius={16} />
             <SkeletonItem
               marginTop={12}
               width="100%"

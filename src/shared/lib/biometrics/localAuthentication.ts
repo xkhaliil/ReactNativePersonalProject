@@ -10,7 +10,9 @@ export type BiometricSupport = {
 function getBiometricLabel(
   types: LocalAuthentication.AuthenticationType[],
 ): string {
-  if (types.includes(LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION)) {
+  if (
+    types.includes(LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION)
+  ) {
     return "face recognition"
   }
 

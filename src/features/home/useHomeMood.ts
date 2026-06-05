@@ -124,4 +124,3 @@ export function useHomeMood(): UseHomeMoodReturn {
     handleMoodDetected,
   }
 }
-

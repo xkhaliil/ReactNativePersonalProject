@@ -1,162 +1,151 @@
 # SpotifyMood
 
-## What is this?
+## Project Description
 
-SpotifyMood helps you discover music that matches how you feel in the moment. On the Discover tab you scan your mood with the front camera, and the app suggests a curated playlist aligned with that emotion (Happy, Sad, Angry, Chill, or Hype). When you connect Spotify, recommendations and track lists come from the real Spotify API; otherwise the app still works with built-in fallback playlists. Every scan is saved to a personal history you can browse, pull to refresh, and paginate by date. Profile and Settings let you customize your display name, bio, favourite genre, haptic feedback, and Spotify connection — all persisted on-device so your preferences survive restarts.
+SpotifyMood is a mobile app that helps users translate their current mood into music recommendations in a fast and engaging way. The app lets a user scan their mood with the camera, browse mood-matched playlists, connect Spotify for richer recommendations, and keep a personal history of past mood scans. It is useful because it combines mood capture, personalized music discovery, persistent settings, profile customization, reminders, theme support, and biometric protection into a single mobile experience that is easy to reuse day to day.
 
-## How it's built
+## High-Level Technical Overview
 
-SpotifyMood is a React Native app on **Expo SDK 54** (New Architecture) written in **TypeScript** with strict checking. Navigation uses React Navigation 7 in three layers: a root `NativeStackNavigator` (tabs + Settings modal), a `BottomTabNavigator` (Discover, History, Profile), and a nested stack inside Discover (Home → Playlist Detail). Feature code lives under `src/features/` with public barrels (modlets); cross-cutting types and navigation param lists are exposed only via `#shared`. Persistence uses **AsyncStorage** through `useStorage` — never imported in screens. Device features are abstracted in hooks: **expo-camera** via `useMoodCamera`, **expo-haptics** via `useHaptics`. Styling is centralized in `design-system/` (tokens + primitives + reusable components); screens keep minimal layout styles. Tests use **Jest 29**, **jest-expo**, and **React Native Testing Library**. CI runs typecheck, ESLint, Prettier, Knip, and tests as separate steps; **EAS Build** runs on pushes to `main`.
+SpotifyMood is built as a feature-based React Native application using Expo 56 and strict TypeScript. Routing is intentionally separated from feature and rendering logic under `src/app/navigation`, while application domains such as `home`, `history`, `profile`, `settings`, and `spotify` live under `src/features`. Shared capabilities such as theming, notifications, local storage, biometrics, haptics, and reusable UI components are isolated in `src/shared`, and each feature exposes a small public surface through an `index.ts` barrel so the rest of the app does not reach into private internals. This structure supports modlet-style isolation, keeps code maintainable, and clearly distinguishes shared infrastructure from domain-specific behavior.
 
-**Key tech stack:**
+**Important tech stack**
 
-- Expo SDK 54 / React Native 0.81 / React 19
-- TypeScript 5.9 (strict)
-- React Navigation 7 (native-stack + bottom-tabs)
-- AsyncStorage — mood history, profile, settings, Spotify tokens
-- expo-camera — mood scan capture
-- expo-haptics — mood-specific feedback patterns
-- Spotify Web API + OAuth PKCE (expo-auth-session) — optional live recommendations
-- Jest 29 + React Native Testing Library
+- Expo 56
+- React Native 0.85
+- React 19
+- TypeScript 6
+- React Navigation 7
+- AsyncStorage
+- Expo Camera
+- Expo Haptics
+- Expo Local Authentication
+- Expo Notifications
+- Expo Splash Screen
+- Expo System UI
+- Expo Auth Session
+- Spotify Web API
+- Jest + `jest-expo` + React Native Testing Library
 - ESLint + Prettier + Knip
-- GitHub Actions + EAS Build
+- EAS Build / Expo services
 
-## Getting started
+## Onboarding
 
 ### Prerequisites
 
-- **Node.js** ≥ 20
-- **npm** ≥ 10
-- **Expo Go** on a device, or Android Emulator / iOS Simulator
-- _(Optional)_ [Spotify Developer](https://developer.spotify.com/dashboard) app for live tracks
-- _(For CI builds)_ [Expo account](https://expo.dev) and `eas-cli` (`npm i -g eas-cli`)
+- Node.js 20 or newer
+- npm 10 or newer
+- Expo Go or a simulator/emulator
+- Expo account for cloud builds
+- Optional Spotify Developer account for live Spotify integration
 
-### Environment variables
+### Environment Variables
 
-Copy `.env.example` to `.env` and fill in values as needed:
+Copy `.env.example` to `.env` and set the values you need:
 
-| Variable                        | Required                      | Purpose                                   |
-| ------------------------------- | ----------------------------- | ----------------------------------------- |
-| `EXPO_PUBLIC_SPOTIFY_CLIENT_ID` | No (local demo works without) | Spotify OAuth + API recommendations       |
-| `EXPO_TOKEN`                    | CI only (GitHub secret)       | Authenticates EAS Build in GitHub Actions |
+| Variable                        | Required                                   | Purpose                                                    |
+| ------------------------------- | ------------------------------------------ | ---------------------------------------------------------- |
+| `EXPO_PUBLIC_SPOTIFY_CLIENT_ID` | Optional                                   | Enables Spotify OAuth and live Spotify recommendations     |
+| `EXPO_PUBLIC_FACEPP_API_SECRET` | Optional, depending on your detection flow | Used by the existing mood-detection environment setup      |
+| `EXPO_TOKEN`                    | CI / EAS only                              | Allows authenticated Expo and EAS operations in automation |
 
-**Spotify setup (optional):**
-
-1. Create an app at https://developer.spotify.com/dashboard
-2. Add redirect URIs: `skycast://spotify-auth` and your Expo Go URL (e.g. `exp://192.168.x.x:8081`)
-3. Paste the Client ID into `.env` as `EXPO_PUBLIC_SPOTIFY_CLIENT_ID`
-
-PKCE is used — no client secret is required on mobile.
-
-### Local development
+### Install And Run
 
 ```bash
 npm install
-npm start          # Expo Dev Tools — scan QR with Expo Go
-npm run android    # Android emulator/device
-npm run ios        # iOS simulator
+npm start
 ```
 
-### Running checks
+Useful local commands:
 
 ```bash
-npm run lint-typecheck   # TypeScript only
-npm run lint-eslint      # ESLint only
-npm run lint-prettier    # Prettier only
-npm run lint-knip        # Dead-code check
-npm run lint             # All of the above
-npm test                 # Jest (smoke, unit, integration tests)
+npm run android
+npm run ios
+npm run web
 ```
 
-### EAS cloud builds
+Validation commands:
+
+```bash
+npm run lint-typecheck
+npm run lint-eslint
+npm run lint-prettier
+npm run lint-knip
+npm test -- --runInBand
+npx expo-doctor@latest
+```
+
+### Spotify Setup
+
+If you want live Spotify recommendations:
+
+1. Create an app in the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard).
+2. Add `skycast://spotify-auth` as a redirect URI.
+3. Put the client ID into `.env` as `EXPO_PUBLIC_SPOTIFY_CLIENT_ID`.
+
+The app uses PKCE, so no client secret is required on-device.
+
+### Build Commands
 
 ```bash
 eas init
 eas build --profile preview --platform all
 ```
 
-Preview builds also run automatically on push to `main` when `EXPO_TOKEN` is configured in GitHub Secrets.
+## Architecture Notes
 
-## Navigation (start here for routing review)
+### All App Code Lives In `src`
 
-All routing is defined under **`src/navigation/`** — not in feature folders. Read in this order:
+All application code is kept inside the `src` directory:
 
-1. **`src/navigation/navigationMap.ts`** — tree diagram and every user transition (from → trigger → to)
-2. **`src/navigation/routes.ts`** — `ROUTES` constants (no magic strings in screens)
-3. **`src/navigation/hooks.ts`** — `useRootNavigation`, `useHomeStackNavigation`, `navigateTo*` helpers
-4. **`src/shared/navigationTypes.ts`** — TypeScript params for each screen
-
-```mermaid
-flowchart TD
-  App[App.tsx NavigationContainer]
-  Root[Root Stack]
-  Tabs[Bottom Tabs]
-  HomeStack[Home Stack - nested]
-  Settings[Settings modal]
-
-  App --> Root
-  Root --> Tabs
-  Root --> Settings
-  Tabs --> HomeStack
-  Tabs --> History[History tab]
-  Tabs --> Profile[Profile tab]
-  HomeStack --> Home[Home - Discover]
-  HomeStack --> Detail[PlaylistDetail]
-  Home -->|⚙️ header| Settings
-  Home -->|View Full Playlist| Detail
-  Detail -->|Back| Home
-```
-
-| Level      | Navigator    | File                     | Screens                              |
-| ---------- | ------------ | ------------------------ | ------------------------------------ |
-| 1 — Root   | Native Stack | `RootNavigator.tsx`      | `Tabs` (initial), `Settings` (modal) |
-| 2 — Tabs   | Bottom Tabs  | `MainTabNavigator.tsx`   | `HomeTab`, `History`, `Profile`      |
-| 3 — Nested | Native Stack | `HomeStackNavigator.tsx` | `Home`, `PlaylistDetail`             |
-
-**Where navigation is triggered**
-
-| From            | Action             | API                                       |
-| --------------- | ------------------ | ----------------------------------------- |
-| Discover header | ⚙️                 | `navigateToSettings(useRootNavigation())` |
-| Discover        | View Full Playlist | `navigateToPlaylistDetail(...)`           |
-| Playlist Detail | ← Back             | `navigation.goBack()`                     |
-| Tab bar         | Switch tab         | Built-in tab navigator                    |
-
-## Project structure
-
-```
+```text
 src/
-  index.ts                 # entry (main in package.json)
-  App.tsx                  # NavigationContainer only — minimal shell
-  shared/                  # public API (#shared alias) + navigationTypes
-  navigation/              # ALL navigators, ROUTES, navigationMap, hooks
-  design-system/           # tokens, primitives, reusable UI
-  features/                # screens only (no navigators)
-  hooks/                   # persistence, haptics, camera abstraction
+  app/                # app shell and routing
+    navigation/       # stack/tab navigators, routes, route types, helpers
+  features/           # feature/domain folders
+  shared/             # shared UI, storage, hooks, notifications, biometrics, tokens
+  index.ts            # Expo entry point
 ```
 
-Import rules:
+### Routing Is Distinct From Rendering Logic
 
-- Cross-feature types/navigation: `import { … } from "#shared"`
-- Feature internals: import from that feature's `index.ts` barrel
-- Design system: `import { Button, colors } from "../design-system"` (or feature-relative path)
-- Never import from another feature's subfolders directly
+Routing is clearly separated from domain logic and UI composition. Navigators, route definitions, and navigation helpers live in `src/app/navigation`, while screens and feature behavior live in `src/features`. This keeps application flow easy to inspect and avoids mixing routing concerns into business logic.
 
-## Course requirements checklist
+### Feature-Based Organization
 
-| Requirement                         | Where                                                                                    |
-| ----------------------------------- | ---------------------------------------------------------------------------------------- |
-| Multiple components + hooks         | Design system + feature screens; `useState`, `useEffect`, `useCallback`, `useMemo`, etc. |
-| StyleSheet in every component       | All `.tsx` UI files including navigators and Typography                                  |
-| Root Stack + Tabs + nested Stack    | `navigation/` — see **Navigation** section above                                         |
-| Feature-based + modlets             | `src/features/*/index.ts` barrels                                                        |
-| `#shared` alias                     | `tsconfig.json` paths; Jest `moduleNameMapper`                                           |
-| Primitives separate from components | `design-system/primitives/`                                                              |
-| Reusability documented              | Comments on Button (HIGH) vs ScreenLayout (LOW), etc.                                    |
-| Persistence in hooks                | `useStorage`, `useMoodHistory`, `useProfile`, `useSettings`                              |
-| Device features abstracted          | `useMoodCamera`, `useHaptics`                                                            |
-| TextInput + Switch + storage        | Profile (`FormField`), Settings/Profile (`SettingsRow`)                                  |
-| Logic vs rendering                  | `useHomeMood`, `groupMoodHistoryByDate`, `playlistTracks`, `useProfile` validation       |
-| Tests                               | `design-system/components/__tests__/` — smoke, unit (mock + press), integration          |
-| CI/CD                               | `.github/workflows/ci.yml` — lint steps + tests + EAS on main                            |
-| SectionList + FlatList              | `HistoryScreen` (pull-to-refresh, `onEndReached`); `PlaylistDetailScreen`                |
+The project uses domain-based organization rather than a purely layer-based structure. Each main concept in the app is represented as a feature folder, such as:
+
+- `src/features/home`
+- `src/features/history`
+- `src/features/profile`
+- `src/features/settings`
+- `src/features/spotify`
+
+### Modlets And Explicit Public APIs
+
+Each feature exposes what the rest of the app is allowed to consume through its `index.ts` barrel, which acts as a modlet-style boundary. Commonly used cross-cutting functionality is also explicitly exposed through public entry points such as `src/shared/index.ts` and `src/shared/ui/index.ts`, instead of being accessed through deep internal imports or excessive `..` traversal.
+
+### Course Concepts Represented In Code
+
+The project includes the concepts expected from the course and earlier assignments:
+
+- reusable components and hooks
+- typed navigation with separate routing files
+- local persistence with AsyncStorage
+- device integration with camera, haptics, biometrics, and notifications
+- clear logic/render separation through hooks and helper modules
+- testing with Jest and React Native Testing Library
+- shared UI tokens and reusable components
+- feature isolation with public module boundaries
+- validation through TypeScript, ESLint, Prettier, Knip, and Expo Doctor
+
+## Final Status
+
+At the current final state:
+
+- the project is upgraded to Expo 56
+- all application code remains under `src`
+- routing is separated from rendering and domain logic
+- the app uses a feature-based structure with modlet-style barrels
+- commonly shared functionality is explicitly exposed
+- tests, ESLint, TypeScript, and Expo Doctor pass
+- Prettier can be finalized with `prettier --write .` if a formatting-only cleanup is required

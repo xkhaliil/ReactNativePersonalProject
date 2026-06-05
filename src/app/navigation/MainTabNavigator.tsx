@@ -135,4 +135,3 @@ export default function MainTabNavigator(): React.JSX.Element {
     </Tab.Navigator>
   )
 }
-

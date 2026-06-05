@@ -58,4 +58,3 @@ export default function RootNavigator(): React.JSX.Element {
     </Stack.Navigator>
   )
 }
-

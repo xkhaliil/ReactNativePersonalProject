@@ -14,7 +14,7 @@
 
 import { useCallback, useState } from "react"
 
-import { useHaptics , useStorage } from "#shared"
+import { useHaptics, useStorage } from "#shared"
 
 const STORAGE_KEY = "mood-history-v1"
 const MAX_ENTRIES = 50
@@ -109,4 +109,3 @@ export function formatEntryTime(timestamp: number): string {
     day: "numeric",
   })
 }
-

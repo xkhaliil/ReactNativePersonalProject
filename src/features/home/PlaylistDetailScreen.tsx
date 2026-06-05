@@ -1,13 +1,7 @@
 import { useRoute, type RouteProp } from "@react-navigation/native"
 import type React from "react"
 import { useMemo } from "react"
-import {
-  FlatList,
-  Linking,
-  Pressable,
-  Text,
-  View,
-} from "react-native"
+import { FlatList, Linking, Pressable, Text, View } from "react-native"
 
 import { type HomeStackParamList } from "#app/navigation"
 
@@ -303,4 +297,3 @@ export default function PlaylistDetailScreen(): React.JSX.Element {
     />
   )
 }
-

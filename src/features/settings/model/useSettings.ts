@@ -58,4 +58,3 @@ export function useSettings(): UseSettingsReturn {
 
   return { settings, setSetting, loading }
 }
-

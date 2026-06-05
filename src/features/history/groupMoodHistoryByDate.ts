@@ -35,4 +35,3 @@ export function groupMoodHistoryByDate(
 
   return Object.entries(buckets).map(([title, data]) => ({ title, data }))
 }
-

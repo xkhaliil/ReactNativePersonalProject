@@ -16,7 +16,6 @@ import {
   useThemedStyles,
 } from "#shared/ui"
 
-
 import MoodCamera from "./MoodCamera"
 import MoodCard from "./MoodCard"
 import PlaylistCard from "./PlaylistCard"
@@ -135,4 +134,3 @@ export default function HomeScreen(): React.JSX.Element {
     </View>
   )
 }
-
