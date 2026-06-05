@@ -5,7 +5,6 @@ const config: KnipConfiguration = {
   ignore: ["babel.config.cjs"],
   ignoreDependencies: [
     "expo-updates",
-    "expo-system-ui",
     // globals is used in eslint.config.js but listed as a transitive dep
     "globals",
     // expo-crypto is a peer dep consumed internally by expo-auth-session (not imported directly)

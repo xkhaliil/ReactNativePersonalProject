@@ -177,7 +177,6 @@ export function createTypography(colors: AppColors): AppTypography {
   } as const
 }
 
-export const colors = darkColors
-export const typography = createTypography(colors)
+export const typography = createTypography(darkColors)
 
 export { spacing, radii, borderWidths, sizes, fontSizes, fontWeights }

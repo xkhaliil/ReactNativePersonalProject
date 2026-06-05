@@ -13,13 +13,7 @@ import {
   useState,
   useCallback,
 } from "react"
-import {
-  StyleSheet,
-  useColorScheme,
-  type ImageStyle,
-  type TextStyle,
-  type ViewStyle,
-} from "react-native"
+import { StyleSheet, useColorScheme } from "react-native"
 
 import { useStorage } from "#shared/lib/storage/useStorage"
 
@@ -157,7 +151,3 @@ export function useThemedStyles<T extends StyleSheet.NamedStyles<T>>(
     [createStyles, theme],
   )
 }
-
-export type ThemedTextStyle = TextStyle
-export type ThemedViewStyle = ViewStyle
-export type ThemedImageStyle = ImageStyle
