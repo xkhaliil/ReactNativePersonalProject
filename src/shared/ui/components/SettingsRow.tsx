@@ -6,9 +6,10 @@
  */
 
 import type React from "react"
-import { StyleSheet, Switch, View } from "react-native"
+import { Switch, View } from "react-native"
 
-import { borderWidths, colors, fontWeights, spacing } from "../tokens"
+import { useAppTheme, useThemedStyles } from "../theme"
+import { borderWidths, fontWeights, spacing } from "../tokens"
 
 import { Body, Caption } from "./Typography"
 
@@ -25,6 +26,29 @@ export function SettingsRow({
   value,
   onValueChange,
 }: SettingsRowProps): React.JSX.Element {
+  const { colors } = useAppTheme()
+  const styles = useThemedStyles(({ colors: themeColors }) => ({
+    row: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      paddingVertical: spacing.md,
+      borderBottomWidth: borderWidths.thin,
+      borderBottomColor: themeColors.border.divider,
+    },
+    info: {
+      flex: 1,
+      marginRight: spacing.lg,
+    },
+    title: {
+      fontWeight: fontWeights.semibold,
+      color: themeColors.text.primary,
+    },
+    desc: {
+      marginTop: spacing["2xs"],
+      color: themeColors.text.muted,
+    },
+  }))
   return (
     <View style={styles.row}>
       <View style={styles.info}>
@@ -44,26 +68,3 @@ export function SettingsRow({
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: spacing.md,
-    borderBottomWidth: borderWidths.thin,
-    borderBottomColor: colors.border.divider,
-  },
-  info: {
-    flex: 1,
-    marginRight: spacing.lg,
-  },
-  title: {
-    fontWeight: fontWeights.semibold,
-    color: colors.text.primary,
-  },
-  desc: {
-    marginTop: spacing["2xs"],
-    color: colors.text.muted,
-  },
-})

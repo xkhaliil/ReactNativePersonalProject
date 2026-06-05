@@ -1,12 +1,12 @@
 import type React from "react"
-import { Pressable, StyleSheet, Text } from "react-native"
+import { Pressable, Text } from "react-native"
 
 import {
   borderWidths,
-  colors,
   fontSizes,
   radii,
   spacing,
+  useThemedStyles,
 } from "#shared/ui"
 
 import { navigateToSettings, useRootNavigation } from "./hooks"
@@ -17,6 +17,27 @@ import { navigateToSettings, useRootNavigation } from "./hooks"
  */
 export function SettingsHeaderButton(): React.JSX.Element {
   const navigation = useRootNavigation()
+  const styles = useThemedStyles(({ colors }) => ({
+    settingsBtn: {
+      width: 36,
+      height: 36,
+      borderRadius: radii.full,
+      borderWidth: borderWidths.thin,
+      borderColor: colors.border.default,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: colors.bg.glass,
+      marginRight: spacing.xs,
+    },
+    settingsBtnPressed: {
+      opacity: 0.65,
+      backgroundColor: colors.bg.surface,
+    },
+    settingsIcon: {
+      fontSize: fontSizes.base,
+      color: colors.text.secondary,
+    },
+  }))
 
   return (
     <Pressable
@@ -33,26 +54,4 @@ export function SettingsHeaderButton(): React.JSX.Element {
     </Pressable>
   )
 }
-
-const styles = StyleSheet.create({
-  settingsBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: radii.full,
-    borderWidth: borderWidths.thin,
-    borderColor: colors.border.default,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: colors.bg.glass,
-    marginRight: spacing.xs,
-  },
-  settingsBtnPressed: {
-    opacity: 0.65,
-    backgroundColor: colors.bg.surface,
-  },
-  settingsIcon: {
-    fontSize: fontSizes.base,
-    color: colors.text.secondary,
-  },
-})
 

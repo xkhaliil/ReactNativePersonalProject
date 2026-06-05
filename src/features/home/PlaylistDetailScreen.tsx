@@ -5,7 +5,6 @@ import {
   FlatList,
   Linking,
   Pressable,
-  StyleSheet,
   Text,
   View,
 } from "react-native"
@@ -15,11 +14,11 @@ import { type HomeStackParamList } from "#app/navigation"
 import { useHomeStackNavigation } from "#app/navigation"
 import {
   borderWidths,
-  colors,
   fontSizes,
   fontWeights,
   radii,
   spacing,
+  useThemedStyles,
 } from "#shared/ui"
 
 import { buildPlaylistTrackRows, type PlaylistTrackRow } from "./playlistTracks"
@@ -29,6 +28,150 @@ type PlaylistDetailRouteProp = RouteProp<HomeStackParamList, "PlaylistDetail">
 export default function PlaylistDetailScreen(): React.JSX.Element {
   const route = useRoute<PlaylistDetailRouteProp>()
   const navigation = useHomeStackNavigation()
+  const styles = useThemedStyles(({ colors }) => ({
+    screen: {
+      flex: 1,
+      backgroundColor: colors.bg.screen,
+    },
+    content: {
+      padding: spacing.xl,
+      paddingBottom: spacing["7xl"],
+    },
+    header: {
+      alignItems: "center",
+      borderRadius: radii["2xl"],
+      borderWidth: borderWidths.base,
+      padding: spacing["3xl"],
+      gap: spacing.sm,
+      marginBottom: spacing.lg,
+      shadowColor: colors.shadow.base,
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.25,
+      shadowRadius: 12,
+      elevation: 6,
+    },
+    emoji: {
+      fontSize: fontSizes.emojiLg,
+      marginBottom: spacing.xs,
+    },
+    moodLabel: {
+      fontSize: fontSizes["3xl"],
+      fontWeight: fontWeights.bold,
+      textTransform: "uppercase",
+      letterSpacing: 3,
+    },
+    playlistTitle: {
+      color: colors.text.primary,
+      fontSize: fontSizes.lg,
+      fontWeight: fontWeights.bold,
+      textAlign: "center",
+    },
+    genre: {
+      color: colors.text.muted,
+      fontSize: fontSizes.sm,
+      textAlign: "center",
+      textTransform: "uppercase",
+      letterSpacing: 0.8,
+    },
+    sectionHeading: {
+      color: colors.text.muted,
+      fontSize: fontSizes.xs,
+      fontWeight: fontWeights.bold,
+      textTransform: "uppercase",
+      letterSpacing: 1.5,
+      marginBottom: spacing.sm,
+      marginLeft: spacing.xs,
+    },
+    trackItem: {
+      marginBottom: 0,
+    },
+    trackSeparator: {
+      height: spacing.xs,
+    },
+    trackRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      backgroundColor: colors.bg.surface,
+      borderRadius: radii.lg,
+      borderWidth: borderWidths.thin,
+      borderColor: colors.border.subtle,
+      paddingVertical: spacing.md,
+      paddingHorizontal: spacing.lg,
+      gap: spacing.md,
+    },
+    trackRowTappable: {
+      borderColor: colors.border.default,
+    },
+    trackRowPressed: {
+      opacity: 0.7,
+    },
+    trackNum: {
+      width: 24,
+      textAlign: "center",
+      fontSize: fontSizes.sm,
+      fontWeight: fontWeights.bold,
+    },
+    trackInfo: {
+      flex: 1,
+      gap: 2,
+    },
+    trackTitle: {
+      color: colors.text.primary,
+      fontSize: fontSizes.base,
+      fontWeight: fontWeights.semibold,
+    },
+    trackArtist: {
+      color: colors.text.muted,
+      fontSize: fontSizes.xs,
+    },
+    trackChevron: {
+      color: colors.text.faint,
+      fontSize: 22,
+      lineHeight: 22,
+    },
+    spotifyIcon: {
+      fontSize: 14,
+      lineHeight: 22,
+      fontWeight: fontWeights.bold,
+    },
+    openPlaylistBtn: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: spacing.xs,
+      marginTop: spacing.md,
+      borderWidth: borderWidths.base,
+      borderRadius: radii.full,
+      paddingVertical: spacing.sm,
+      paddingHorizontal: spacing.xl,
+    },
+    openPlaylistBtnPressed: {
+      opacity: 0.7,
+    },
+    openPlaylistIcon: {
+      fontSize: 12,
+      color: colors.accent.default,
+    },
+    openPlaylistText: {
+      fontSize: fontSizes.sm,
+      fontWeight: fontWeights.bold,
+      letterSpacing: 0.3,
+    },
+    backBtn: {
+      borderWidth: borderWidths.base,
+      borderRadius: radii.full,
+      paddingVertical: spacing.md,
+      alignItems: "center",
+      marginTop: spacing.lg,
+    },
+    backBtnPressed: {
+      opacity: 0.7,
+    },
+    backBtnText: {
+      fontWeight: fontWeights.bold,
+      fontSize: fontSizes.base,
+      letterSpacing: 0.3,
+    },
+  }))
   const {
     mood,
     emoji,
@@ -160,149 +303,4 @@ export default function PlaylistDetailScreen(): React.JSX.Element {
     />
   )
 }
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    backgroundColor: colors.bg.screen,
-  },
-  content: {
-    padding: spacing.xl,
-    paddingBottom: spacing["7xl"],
-  },
-  header: {
-    alignItems: "center",
-    borderRadius: radii["2xl"],
-    borderWidth: borderWidths.base,
-    padding: spacing["3xl"],
-    gap: spacing.sm,
-    marginBottom: spacing.lg,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 12,
-    elevation: 6,
-  },
-  emoji: {
-    fontSize: fontSizes.emojiLg,
-    marginBottom: spacing.xs,
-  },
-  moodLabel: {
-    fontSize: fontSizes["3xl"],
-    fontWeight: fontWeights.bold,
-    textTransform: "uppercase",
-    letterSpacing: 3,
-  },
-  playlistTitle: {
-    color: colors.text.primary,
-    fontSize: fontSizes.lg,
-    fontWeight: fontWeights.bold,
-    textAlign: "center",
-  },
-  genre: {
-    color: colors.text.muted,
-    fontSize: fontSizes.sm,
-    textAlign: "center",
-    textTransform: "uppercase",
-    letterSpacing: 0.8,
-  },
-  sectionHeading: {
-    color: colors.text.muted,
-    fontSize: fontSizes.xs,
-    fontWeight: fontWeights.bold,
-    textTransform: "uppercase",
-    letterSpacing: 1.5,
-    marginBottom: spacing.sm,
-    marginLeft: spacing.xs,
-  },
-  trackItem: {
-    marginBottom: 0,
-  },
-  trackSeparator: {
-    height: spacing.xs,
-  },
-  trackRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: colors.bg.surface,
-    borderRadius: radii.lg,
-    borderWidth: borderWidths.thin,
-    borderColor: colors.border.subtle,
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.lg,
-    gap: spacing.md,
-  },
-  trackRowTappable: {
-    borderColor: colors.border.default,
-  },
-  trackRowPressed: {
-    opacity: 0.7,
-  },
-  trackNum: {
-    width: 24,
-    textAlign: "center",
-    fontSize: fontSizes.sm,
-    fontWeight: fontWeights.bold,
-  },
-  trackInfo: {
-    flex: 1,
-    gap: 2,
-  },
-  trackTitle: {
-    color: colors.text.primary,
-    fontSize: fontSizes.base,
-    fontWeight: fontWeights.semibold,
-  },
-  trackArtist: {
-    color: colors.text.muted,
-    fontSize: fontSizes.xs,
-  },
-  trackChevron: {
-    color: colors.text.faint,
-    fontSize: 22,
-    lineHeight: 22,
-  },
-  spotifyIcon: {
-    fontSize: 14,
-    lineHeight: 22,
-    fontWeight: fontWeights.bold,
-  },
-  openPlaylistBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: spacing.xs,
-    marginTop: spacing.md,
-    borderWidth: borderWidths.base,
-    borderRadius: radii.full,
-    paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.xl,
-  },
-  openPlaylistBtnPressed: {
-    opacity: 0.7,
-  },
-  openPlaylistIcon: {
-    fontSize: 12,
-    color: colors.accent.default,
-  },
-  openPlaylistText: {
-    fontSize: fontSizes.sm,
-    fontWeight: fontWeights.bold,
-    letterSpacing: 0.3,
-  },
-  backBtn: {
-    borderWidth: borderWidths.base,
-    borderRadius: radii.full,
-    paddingVertical: spacing.md,
-    alignItems: "center",
-    marginTop: spacing.lg,
-  },
-  backBtnPressed: {
-    opacity: 0.7,
-  },
-  backBtnText: {
-    fontWeight: fontWeights.bold,
-    fontSize: fontSizes.base,
-    letterSpacing: 0.3,
-  },
-})
 

@@ -1,10 +1,13 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import type React from "react"
-import { StyleSheet } from "react-native"
-
 
 import { HomeScreen, PlaylistDetailScreen } from "#features/home"
-import { colors, fontSizes, fontWeights } from "#shared/ui"
+import {
+  fontSizes,
+  fontWeights,
+  useAppTheme,
+  useThemedStyles,
+} from "#shared/ui"
 
 import { ROUTES } from "./routes"
 import { SettingsHeaderButton } from "./SettingsHeaderButton"
@@ -22,6 +25,22 @@ import { type HomeStackParamList } from "./types"
 const Stack = createNativeStackNavigator<HomeStackParamList>()
 
 export default function HomeStackNavigator(): React.JSX.Element {
+  const { colors } = useAppTheme()
+  const styles = useThemedStyles(({ colors: themeColors }) => ({
+    header: {
+      backgroundColor: themeColors.bg.screen,
+    },
+    headerTitle: {
+      color: themeColors.text.primary,
+      fontWeight: fontWeights.bold,
+      fontSize: fontSizes.lg,
+      letterSpacing: -0.3,
+    },
+    content: {
+      backgroundColor: themeColors.bg.screen,
+    },
+  }))
+
   return (
     <Stack.Navigator
       screenOptions={{
@@ -50,19 +69,4 @@ export default function HomeStackNavigator(): React.JSX.Element {
     </Stack.Navigator>
   )
 }
-
-const styles = StyleSheet.create({
-  header: {
-    backgroundColor: colors.bg.screen,
-  },
-  headerTitle: {
-    color: colors.text.primary,
-    fontWeight: fontWeights.bold,
-    fontSize: fontSizes.lg,
-    letterSpacing: -0.3,
-  },
-  content: {
-    backgroundColor: colors.bg.screen,
-  },
-})
 

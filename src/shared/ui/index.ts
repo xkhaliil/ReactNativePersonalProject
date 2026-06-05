@@ -17,6 +17,7 @@ export { Card } from "./components/Card"
 export { ScreenLayout } from "./components/ScreenLayout"
 export { SettingsRow } from "./components/SettingsRow"
 export { FormField } from "./components/FormField"
+export { Skeleton, SkeletonItem } from "./components/Skeleton"
 export {
   ScreenTitle,
   SectionTitle,
@@ -26,3 +27,11 @@ export {
   Caption,
   Label,
 } from "./components/Typography"
+
+// ─── Theme ───────────────────────────────────────────────────────────────────
+export {
+  AppThemeProvider,
+  useAppTheme,
+  useThemedStyles,
+  type ThemePreference,
+} from "./theme"

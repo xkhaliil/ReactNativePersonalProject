@@ -8,11 +8,11 @@
  *   - ghost:   subtle dark background, used for secondary actions
  */
 
-import { Pressable, StyleSheet, Text } from "react-native"
+import { Pressable, Text } from "react-native"
 
+import { useAppTheme, useThemedStyles } from "../theme"
 import {
   borderWidths,
-  colors,
   fontSizes,
   fontWeights,
   radii,
@@ -39,6 +39,57 @@ export function Button({
   accentColor,
   disabled = false,
 }: ButtonProps): React.JSX.Element {
+  const { colors } = useAppTheme()
+  const styles = useThemedStyles(({ colors: themeColors }) => ({
+    base: {
+      height: sizes.buttonHeight,
+      borderRadius: radii.full,
+      alignItems: "center",
+      justifyContent: "center",
+      paddingHorizontal: spacing["4xl"],
+      alignSelf: "stretch",
+    },
+    primary: {
+      shadowColor: themeColors.accent.default,
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.35,
+      shadowRadius: 12,
+      elevation: 8,
+    },
+    pressedPrimary: {
+      opacity: 0.88,
+      shadowOpacity: 0.2,
+    },
+    outline: {
+      borderWidth: borderWidths.base,
+      backgroundColor: "transparent",
+    },
+    pressedOutline: {
+      opacity: 0.75,
+    },
+    ghost: {
+      backgroundColor: themeColors.bg.glass,
+      borderWidth: borderWidths.thin,
+      borderColor: themeColors.border.default,
+    },
+    pressedGhost: {
+      backgroundColor: themeColors.bg.surface,
+    },
+    disabled: {
+      opacity: 0.38,
+    },
+    label: {
+      fontSize: fontSizes.base,
+      fontWeight: fontWeights.bold,
+      letterSpacing: 0.3,
+    },
+    labelPrimary: {
+      color: themeColors.accent.on,
+    },
+    labelGhost: {
+      color: themeColors.text.primary,
+    },
+  }))
   const resolvedAccent = accentColor ?? colors.accent.default
 
   return (
@@ -74,54 +125,3 @@ export function Button({
     </Pressable>
   )
 }
-
-const styles = StyleSheet.create({
-  base: {
-    height: sizes.buttonHeight,
-    borderRadius: radii.full,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: spacing["4xl"],
-    alignSelf: "stretch",
-  },
-  primary: {
-    shadowColor: colors.accent.default,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.35,
-    shadowRadius: 12,
-    elevation: 8,
-  },
-  pressedPrimary: {
-    opacity: 0.88,
-    shadowOpacity: 0.2,
-  },
-  outline: {
-    borderWidth: borderWidths.base,
-    backgroundColor: "transparent",
-  },
-  pressedOutline: {
-    opacity: 0.75,
-  },
-  ghost: {
-    backgroundColor: colors.bg.glass,
-    borderWidth: borderWidths.thin,
-    borderColor: colors.border.default,
-  },
-  pressedGhost: {
-    backgroundColor: colors.bg.surface,
-  },
-  disabled: {
-    opacity: 0.38,
-  },
-  label: {
-    fontSize: fontSizes.base,
-    fontWeight: fontWeights.bold,
-    letterSpacing: 0.3,
-  },
-  labelPrimary: {
-    color: colors.accent.on,
-  },
-  labelGhost: {
-    color: colors.text.primary,
-  },
-})

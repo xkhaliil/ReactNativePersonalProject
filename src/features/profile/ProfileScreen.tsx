@@ -1,26 +1,75 @@
 import type React from "react"
-import { ScrollView, StyleSheet, Text, View } from "react-native"
+import { ScrollView, Text, View } from "react-native"
 
 import { useProfile } from "#features/profile"
 import {
   FormField,
   SettingsRow,
   Button,
+  Skeleton,
+  SkeletonItem,
   borderWidths,
-  colors,
   fontSizes,
   fontWeights,
   radii,
   spacing,
+  useThemedStyles,
 } from "#shared/ui"
 
 export default function ProfileScreen(): React.JSX.Element {
+  const styles = useThemedStyles(({ colors }) => ({
+    screen: {
+      flex: 1,
+      backgroundColor: colors.bg.screen,
+    },
+    content: {
+      padding: spacing.xl,
+      paddingBottom: spacing["6xl"],
+      gap: spacing.sm,
+    },
+    pageTitle: {
+      fontSize: fontSizes["4xl"],
+      fontWeight: fontWeights.bold,
+      color: colors.text.primary,
+      letterSpacing: -0.5,
+      marginBottom: spacing.lg,
+    },
+    group: {
+      gap: spacing.sm,
+      marginBottom: spacing.md,
+    },
+    groupLabel: {
+      fontSize: fontSizes.xs,
+      fontWeight: fontWeights.bold,
+      color: colors.text.muted,
+      textTransform: "uppercase",
+      letterSpacing: 1.5,
+      marginLeft: spacing.xs,
+    },
+    groupCard: {
+      backgroundColor: colors.bg.surface,
+      borderRadius: radii.xl,
+      borderWidth: borderWidths.thin,
+      borderColor: colors.border.subtle,
+      padding: spacing.lg,
+      shadowColor: colors.shadow.base,
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.15,
+      shadowRadius: 4,
+      elevation: 2,
+    },
+    saveRow: {
+      gap: spacing.sm,
+      marginTop: spacing.xs,
+    },
+  }))
   const {
     draft,
     errors,
     isDirty,
     isValid,
     saving,
+    loading,
     bioHint,
     setField,
     save,
@@ -32,6 +81,76 @@ export default function ProfileScreen(): React.JSX.Element {
     setCompactHistory,
     setShowGenreHints,
   } = useProfile()
+
+  if (loading) {
+    return (
+      <ScrollView
+        style={styles.screen}
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+      >
+        <Text style={styles.pageTitle}>Profile</Text>
+
+        <View style={styles.group}>
+          <Text style={styles.groupLabel}>About You</Text>
+          <View style={styles.groupCard}>
+            <Skeleton>
+              <SkeletonItem>
+                <SkeletonItem width={96} height={14} />
+                <SkeletonItem
+                  marginTop={10}
+                  width="100%"
+                  height={48}
+                  borderRadius={16}
+                />
+              </SkeletonItem>
+
+              <SkeletonItem marginTop={20}>
+                <SkeletonItem width={52} height={14} />
+                <SkeletonItem
+                  marginTop={10}
+                  width="100%"
+                  height={96}
+                  borderRadius={16}
+                />
+              </SkeletonItem>
+
+              <SkeletonItem marginTop={20}>
+                <SkeletonItem width={118} height={14} />
+                <SkeletonItem
+                  marginTop={10}
+                  width="100%"
+                  height={48}
+                  borderRadius={16}
+                />
+              </SkeletonItem>
+
+              <SkeletonItem
+                marginTop={20}
+                flexDirection="row"
+                justifyContent="space-between"
+              >
+                <SkeletonItem width="58%" height={48} borderRadius={999} />
+                <SkeletonItem width="36%" height={48} borderRadius={999} />
+              </SkeletonItem>
+            </Skeleton>
+          </View>
+        </View>
+
+        <View style={styles.group}>
+          <Text style={styles.groupLabel}>Preferences</Text>
+          <View style={styles.groupCard}>
+            <Skeleton>
+              <SkeletonItem width="100%" height={62} />
+              <SkeletonItem marginTop={12} width="100%" height={62} />
+              <SkeletonItem marginTop={12} width="100%" height={62} />
+            </Skeleton>
+          </View>
+        </View>
+      </ScrollView>
+    )
+  }
 
   return (
     <ScrollView
@@ -121,51 +240,3 @@ export default function ProfileScreen(): React.JSX.Element {
     </ScrollView>
   )
 }
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    backgroundColor: colors.bg.screen,
-  },
-  content: {
-    padding: spacing.xl,
-    paddingBottom: spacing["6xl"],
-    gap: spacing.sm,
-  },
-  pageTitle: {
-    fontSize: fontSizes["4xl"],
-    fontWeight: fontWeights.bold,
-    color: colors.text.primary,
-    letterSpacing: -0.5,
-    marginBottom: spacing.lg,
-  },
-  group: {
-    gap: spacing.sm,
-    marginBottom: spacing.md,
-  },
-  groupLabel: {
-    fontSize: fontSizes.xs,
-    fontWeight: fontWeights.bold,
-    color: colors.text.muted,
-    textTransform: "uppercase",
-    letterSpacing: 1.5,
-    marginLeft: spacing.xs,
-  },
-  groupCard: {
-    backgroundColor: colors.bg.surface,
-    borderRadius: radii.xl,
-    borderWidth: borderWidths.thin,
-    borderColor: colors.border.subtle,
-    padding: spacing.lg,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.15,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  saveRow: {
-    gap: spacing.sm,
-    marginTop: spacing.xs,
-  },
-})
-

@@ -5,9 +5,10 @@
  */
 
 import type React from "react"
-import { ScrollView, StyleSheet, type ScrollViewProps } from "react-native"
+import { ScrollView, type ScrollViewProps } from "react-native"
 
-import { colors, spacing } from "../tokens"
+import { useThemedStyles } from "../theme"
+import { spacing } from "../tokens"
 
 type ScreenLayoutProps = ScrollViewProps & {
   /** Extra horizontal padding (defaults to xl = 20) */
@@ -23,6 +24,20 @@ export function ScreenLayout({
   style,
   ...props
 }: ScreenLayoutProps): React.JSX.Element {
+  const styles = useThemedStyles(({ colors }) => ({
+    scroll: {
+      flex: 1,
+      backgroundColor: colors.bg.screen,
+    },
+    container: {
+      paddingTop: spacing.xl,
+      paddingBottom: spacing["7xl"],
+      gap: spacing.md,
+    },
+    centered: {
+      alignItems: "center",
+    },
+  }))
   return (
     <ScrollView
       style={[styles.scroll, style]}
@@ -37,18 +52,3 @@ export function ScreenLayout({
     />
   )
 }
-
-const styles = StyleSheet.create({
-  scroll: {
-    flex: 1,
-    backgroundColor: colors.bg.screen,
-  },
-  container: {
-    paddingTop: spacing.xl,
-    paddingBottom: spacing["7xl"],
-    gap: spacing.md,
-  },
-  centered: {
-    alignItems: "center",
-  },
-})

@@ -7,9 +7,10 @@
  */
 
 import type React from "react"
-import { StyleSheet, TextInput, type TextInputProps, View } from "react-native"
+import { TextInput, type TextInputProps, View } from "react-native"
 
-import { colors, spacing, fontSizes, radii, borderWidths } from "../tokens"
+import { useAppTheme, useThemedStyles } from "../theme"
+import { spacing, fontSizes, radii, borderWidths } from "../tokens"
 
 import { Body, Caption } from "./Typography"
 
@@ -28,6 +29,40 @@ export function FormField({
   style,
   ...inputProps
 }: FormFieldProps): React.JSX.Element {
+  const { colors } = useAppTheme()
+  const styles = useThemedStyles(({ colors: themeColors }) => ({
+    wrapper: {
+      marginBottom: spacing.lg,
+    },
+    label: {
+      marginBottom: spacing.sm,
+      fontWeight: "600",
+      color: themeColors.text.secondary,
+      fontSize: 13,
+      letterSpacing: 0.3,
+    },
+    input: {
+      backgroundColor: themeColors.bg.surfaceAlt,
+      color: themeColors.text.primary,
+      fontSize: fontSizes.base,
+      borderRadius: radii.lg,
+      borderWidth: borderWidths.base,
+      borderColor: themeColors.border.default,
+      paddingHorizontal: spacing.lg,
+      paddingVertical: spacing.md,
+      minHeight: 48,
+    },
+    inputError: {
+      borderColor: "#FF453A",
+    },
+    hint: {
+      marginTop: spacing.xs,
+      color: themeColors.text.muted,
+    },
+    hintError: {
+      color: "#FF453A",
+    },
+  }))
   const hasError = Boolean(error)
 
   return (
@@ -47,37 +82,3 @@ export function FormField({
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  wrapper: {
-    marginBottom: spacing.lg,
-  },
-  label: {
-    marginBottom: spacing.sm,
-    fontWeight: "600",
-    color: colors.text.secondary,
-    fontSize: 13,
-    letterSpacing: 0.3,
-  },
-  input: {
-    backgroundColor: colors.bg.surfaceAlt,
-    color: colors.text.primary,
-    fontSize: fontSizes.base,
-    borderRadius: radii.lg,
-    borderWidth: borderWidths.base,
-    borderColor: colors.border.default,
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.md,
-    minHeight: 48,
-  },
-  inputError: {
-    borderColor: "#FF453A",
-  },
-  hint: {
-    marginTop: spacing.xs,
-    color: colors.text.muted,
-  },
-  hintError: {
-    color: "#FF453A",
-  },
-})

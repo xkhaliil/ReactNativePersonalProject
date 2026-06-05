@@ -6,9 +6,10 @@
  */
 
 import type React from "react"
-import { StyleSheet, View, type ViewProps } from "react-native"
+import { View, type ViewProps } from "react-native"
 
-import { borderWidths, colors, radii, spacing } from "../tokens"
+import { useThemedStyles } from "../theme"
+import { borderWidths, radii, spacing } from "../tokens"
 
 type CardVariant =
   | "surface" // Standard card
@@ -31,6 +32,43 @@ export function Card({
   style,
   ...props
 }: CardProps): React.JSX.Element {
+  const styles = useThemedStyles(({ colors }) => ({
+    base: {
+      borderRadius: radii.xl,
+      padding: spacing["2xl"],
+      shadowColor: colors.shadow.base,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.25,
+      shadowRadius: 8,
+      elevation: 4,
+    },
+    surface: {
+      backgroundColor: colors.bg.surface,
+      borderWidth: borderWidths.thin,
+      borderColor: colors.border.subtle,
+    },
+    surfaceAlt: {
+      backgroundColor: colors.bg.surfaceAlt,
+      borderRadius: radii.lg,
+      padding: spacing.lg,
+      borderWidth: borderWidths.thin,
+      borderColor: colors.border.subtle,
+    },
+    bordered: {
+      backgroundColor: colors.bg.surface,
+      borderWidth: borderWidths.thick,
+      borderColor: colors.border.default,
+    },
+    leftAccent: {
+      backgroundColor: colors.bg.surface,
+      borderRadius: radii.lg,
+      borderLeftWidth: borderWidths.heavy,
+      borderLeftColor: colors.border.default,
+      padding: spacing.lg,
+      borderWidth: borderWidths.thin,
+      borderColor: colors.border.subtle,
+    },
+  }))
   const variantStyle = (() => {
     switch (variant) {
       case "surfaceAlt":
@@ -52,42 +90,3 @@ export function Card({
 
   return <View style={[styles.base, variantStyle, style]} {...props} />
 }
-
-const styles = StyleSheet.create({
-  base: {
-    borderRadius: radii.xl,
-    padding: spacing["2xl"],
-    // Elevation / shadow
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  surface: {
-    backgroundColor: colors.bg.surface,
-    borderWidth: borderWidths.thin,
-    borderColor: colors.border.subtle,
-  },
-  surfaceAlt: {
-    backgroundColor: colors.bg.surfaceAlt,
-    borderRadius: radii.lg,
-    padding: spacing.lg,
-    borderWidth: borderWidths.thin,
-    borderColor: colors.border.subtle,
-  },
-  bordered: {
-    backgroundColor: colors.bg.surface,
-    borderWidth: borderWidths.thick,
-    borderColor: colors.border.default,
-  },
-  leftAccent: {
-    backgroundColor: colors.bg.surface,
-    borderRadius: radii.lg,
-    borderLeftWidth: borderWidths.heavy,
-    borderLeftColor: colors.border.default,
-    padding: spacing.lg,
-    borderWidth: borderWidths.thin,
-    borderColor: colors.border.subtle,
-  },
-})

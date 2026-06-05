@@ -21,6 +21,7 @@ export type AppSettings = {
   hapticsEnabled: boolean
   compactHistory: boolean
   showGenreHints: boolean
+  biometricLockEnabled: boolean
 }
 
 const DEFAULT_SETTINGS: AppSettings = {
@@ -30,6 +31,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   hapticsEnabled: true,
   compactHistory: false,
   showGenreHints: true,
+  biometricLockEnabled: false,
 }
 
 type UseSettingsReturn = {

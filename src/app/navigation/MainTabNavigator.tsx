@@ -1,19 +1,19 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import type React from "react"
 
-import { StyleSheet, Text, View } from "react-native"
-
+import { Text, View } from "react-native"
 
 import { HistoryScreen } from "#features/history"
 import { ProfileScreen } from "#features/profile"
 import {
   borderWidths,
-  colors,
   fontSizes,
   fontWeights,
   radii,
   sizes,
   spacing,
+  useAppTheme,
+  useThemedStyles,
 } from "#shared/ui"
 
 import HomeStackNavigator from "./HomeStackNavigator"
@@ -45,6 +45,31 @@ const TAB_ICONS: Record<keyof MainTabParamList, string> = {
 }
 
 function TabIcon({ routeName, focused }: TabIconProps): React.JSX.Element {
+  const styles = useThemedStyles(({ colors }) => ({
+    tabItem: {
+      alignItems: "center",
+      justifyContent: "center",
+      width: 32,
+      height: 32,
+      borderRadius: radii.md,
+    },
+    tabItemFocused: {
+      backgroundColor: `${colors.accent.default}18`,
+    },
+    tabIcon: {
+      fontSize: sizes.tabIconDefault,
+      lineHeight: sizes.tabIconDefault + 4,
+    },
+    tabIconFocused: {
+      color: colors.tab.active,
+      fontSize: sizes.tabIconFocused,
+      fontWeight: fontWeights.bold,
+    },
+    tabIconDefault: {
+      color: colors.tab.inactive,
+    },
+  }))
+
   return (
     <View style={[styles.tabItem, focused && styles.tabItemFocused]}>
       <Text
@@ -60,6 +85,25 @@ function TabIcon({ routeName, focused }: TabIconProps): React.JSX.Element {
 }
 
 export default function MainTabNavigator(): React.JSX.Element {
+  const { colors } = useAppTheme()
+  const styles = useThemedStyles(({ colors: themeColors }) => ({
+    tabBar: {
+      backgroundColor: themeColors.tab.bg,
+      borderTopColor: themeColors.tab.border,
+      borderTopWidth: borderWidths.thin,
+      height: sizes.tabBarHeight,
+      paddingBottom: spacing.sm,
+      paddingTop: spacing.xs,
+      elevation: 0,
+      shadowOpacity: 0,
+    },
+    tabLabel: {
+      fontSize: fontSizes.xs,
+      fontWeight: fontWeights.semibold,
+      marginTop: 2,
+    },
+  }))
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -91,44 +135,4 @@ export default function MainTabNavigator(): React.JSX.Element {
     </Tab.Navigator>
   )
 }
-
-const styles = StyleSheet.create({
-  tabBar: {
-    backgroundColor: colors.tab.bg,
-    borderTopColor: colors.tab.border,
-    borderTopWidth: borderWidths.thin,
-    height: sizes.tabBarHeight,
-    paddingBottom: spacing.sm,
-    paddingTop: spacing.xs,
-    elevation: 0,
-    shadowOpacity: 0,
-  },
-  tabItem: {
-    alignItems: "center",
-    justifyContent: "center",
-    width: 32,
-    height: 32,
-    borderRadius: radii.md,
-  },
-  tabItemFocused: {
-    backgroundColor: `${colors.accent.default}18`,
-  },
-  tabIcon: {
-    fontSize: sizes.tabIconDefault,
-    lineHeight: sizes.tabIconDefault + 4,
-  },
-  tabIconFocused: {
-    color: colors.tab.active,
-    fontSize: sizes.tabIconFocused,
-    fontWeight: fontWeights.bold,
-  },
-  tabIconDefault: {
-    color: colors.tab.inactive,
-  },
-  tabLabel: {
-    fontSize: fontSizes.xs,
-    fontWeight: fontWeights.semibold,
-    marginTop: 2,
-  },
-})
 
