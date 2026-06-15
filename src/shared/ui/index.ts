@@ -12,21 +12,7 @@ export * from "./tokens"
 export * from "./primitives/colors"
 
 // ─── Components ──────────────────────────────────────────────────────────────
-export { Button } from "./components/Button"
-export { Card } from "./components/Card"
-export { ScreenLayout } from "./components/ScreenLayout"
-export { SettingsRow } from "./components/SettingsRow"
-export { FormField } from "./components/FormField"
-export { Skeleton, SkeletonItem } from "./components/Skeleton"
-export {
-  ScreenTitle,
-  SectionTitle,
-  CardTitle,
-  Body,
-  BodySecondary,
-  Caption,
-  Label,
-} from "./components/Typography"
+export * from "./components"
 
 // ─── Theme ───────────────────────────────────────────────────────────────────
 export {
