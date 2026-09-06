@@ -1,34 +1,26 @@
 # SpotifyMood
 
-## Project Description
+React Native (Expo) app that turns a camera-scanned mood into Spotify playlist recommendations
 
-SpotifyMood is a mobile app that helps users translate their current mood into music recommendations in a fast and engaging way. The app lets a user scan their mood with the camera, browse mood-matched playlists, connect Spotify for richer recommendations, and keep a personal history of past mood scans. It is useful because it combines mood capture, personalized music discovery, persistent settings, profile customization, reminders, theme support, and biometric protection into a single mobile experience that is easy to reuse day to day.
+![TypeScript](https://img.shields.io/badge/language-TypeScript-blue)
 
-## High-Level Technical Overview
+## What it does
 
-SpotifyMood is built as a feature-based React Native application using Expo 56 and strict TypeScript. Routing is intentionally separated from feature and rendering logic under `src/app/navigation`, while application domains such as `home`, `history`, `profile`, `settings`, and `spotify` live under `src/features`. Shared capabilities such as theming, notifications, local storage, biometrics, haptics, and reusable UI components are isolated in `src/shared`, and each feature exposes a small public surface through an `index.ts` barrel so the rest of the app does not reach into private internals. This structure supports modlet-style isolation, keeps code maintainable, and clearly distinguishes shared infrastructure from domain-specific behavior.
+SpotifyMood lets a user scan their current mood with the device camera, browse mood-matched playlists, and connect a Spotify account (via PKCE OAuth) for personalized recommendations. It keeps a history of past mood scans, supports profile customization and persistent local settings, sends notification reminders, offers light/dark theming, and shows a biometric lock screen before the app content loads.
 
-**Important tech stack**
+## Tech stack
 
-- Expo 56
-- React Native 0.85
-- React 19
-- TypeScript 6
-- React Navigation 7
-- AsyncStorage
-- Expo Camera
-- Expo Haptics
-- Expo Local Authentication
-- Expo Notifications
-- Expo Splash Screen
-- Expo System UI
-- Expo Auth Session
-- Spotify Web API
-- Jest + `jest-expo` + React Native Testing Library
-- ESLint + Prettier + Knip
+- Expo, React Native, React
+- TypeScript
+- React Navigation (native stack + bottom tabs)
+- AsyncStorage for local persistence
+- expo-camera, expo-local-authentication, expo-haptics, expo-notifications, expo-auth-session, expo-crypto
+- Spotify Web API (via expo-auth-session PKCE flow)
+- Jest, jest-expo, React Native Testing Library
+- ESLint, Prettier, Knip
 - EAS Build / Expo services
 
-## Onboarding
+## Getting started
 
 ### Prerequisites
 
@@ -38,24 +30,24 @@ SpotifyMood is built as a feature-based React Native application using Expo 56 a
 - Expo account for cloud builds
 - Optional Spotify Developer account for live Spotify integration
 
-### Environment Variables
+### Environment variables
 
 Copy `.env.example` to `.env` and set the values you need:
 
 | Variable                        | Required                                   | Purpose                                                    |
-| ------------------------------- | ------------------------------------------ | ---------------------------------------------------------- |
+| -------------------------------- | ------------------------------------------- | ------------------------------------------------------------ |
 | `EXPO_PUBLIC_SPOTIFY_CLIENT_ID` | Optional                                   | Enables Spotify OAuth and live Spotify recommendations     |
 | `EXPO_PUBLIC_FACEPP_API_SECRET` | Optional, depending on your detection flow | Used by the existing mood-detection environment setup      |
 | `EXPO_TOKEN`                    | CI / EAS only                              | Allows authenticated Expo and EAS operations in automation |
 
-### Install And Run
+### Install and run
 
 ```bash
 npm install
 npm start
 ```
 
-Useful local commands:
+Platform shortcuts:
 
 ```bash
 npm run android
@@ -71,12 +63,11 @@ npm run lint-eslint
 npm run lint-prettier
 npm run lint-knip
 npm test -- --runInBand
-npx expo-doctor@latest
 ```
 
-### Spotify Setup
+### Spotify setup
 
-If you want live Spotify recommendations:
+To enable live Spotify recommendations:
 
 1. Create an app in the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard).
 2. Add `skycast://spotify-auth` as a redirect URI.
@@ -84,68 +75,30 @@ If you want live Spotify recommendations:
 
 The app uses PKCE, so no client secret is required on-device.
 
-### Build Commands
+### Build commands
 
 ```bash
 eas init
 eas build --profile preview --platform all
 ```
 
-## Architecture Notes
+<!-- TODO: add a screenshot -->
 
-### All App Code Lives In `src`
+## Architecture notes
 
-All application code is kept inside the `src` directory:
+All application code lives under `src`:
 
 ```text
 src/
   app/                # app shell and routing
     navigation/       # stack/tab navigators, routes, route types, helpers
-  features/           # feature/domain folders
+  features/           # feature/domain folders (home, history, profile, settings, spotify)
   shared/             # shared UI, storage, hooks, notifications, biometrics, tokens
   index.ts            # Expo entry point
 ```
 
-### Routing Is Distinct From Rendering Logic
+Routing is kept separate from domain logic and UI composition: navigators, route definitions, and navigation helpers live in `src/app/navigation`, while screens and feature behavior live in `src/features`. Each feature exposes its public surface through an `index.ts` barrel (a "modlet" boundary) rather than being reached into via deep internal imports, and shared cross-cutting functionality is explicitly exposed through `src/shared/index.ts` and `src/shared/ui/index.ts`.
 
-Routing is clearly separated from domain logic and UI composition. Navigators, route definitions, and navigation helpers live in `src/app/navigation`, while screens and feature behavior live in `src/features`. This keeps application flow easy to inspect and avoids mixing routing concerns into business logic.
+## License
 
-### Feature-Based Organization
-
-The project uses domain-based organization rather than a purely layer-based structure. Each main concept in the app is represented as a feature folder, such as:
-
-- `src/features/home`
-- `src/features/history`
-- `src/features/profile`
-- `src/features/settings`
-- `src/features/spotify`
-
-### Modlets And Explicit Public APIs
-
-Each feature exposes what the rest of the app is allowed to consume through its `index.ts` barrel, which acts as a modlet-style boundary. Commonly used cross-cutting functionality is also explicitly exposed through public entry points such as `src/shared/index.ts` and `src/shared/ui/index.ts`, instead of being accessed through deep internal imports or excessive `..` traversal.
-
-### Course Concepts Represented In Code
-
-The project includes the concepts expected from the course and earlier assignments:
-
-- reusable components and hooks
-- typed navigation with separate routing files
-- local persistence with AsyncStorage
-- device integration with camera, haptics, biometrics, and notifications
-- clear logic/render separation through hooks and helper modules
-- testing with Jest and React Native Testing Library
-- shared UI tokens and reusable components
-- feature isolation with public module boundaries
-- validation through TypeScript, ESLint, Prettier, Knip, and Expo Doctor
-
-## Final Status
-
-At the current final state:
-
-- the project is upgraded to Expo 56
-- all application code remains under `src`
-- routing is separated from rendering and domain logic
-- the app uses a feature-based structure with modlet-style barrels
-- commonly shared functionality is explicitly exposed
-- tests, ESLint, TypeScript, and Expo Doctor pass
-- Prettier can be finalized with `prettier --write .` if a formatting-only cleanup is required
+No license file is present in this repository yet.
